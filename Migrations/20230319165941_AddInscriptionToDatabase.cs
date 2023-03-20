@@ -25,7 +25,7 @@ namespace RealEstateApp.Migrations
                     Buyers = table.Column<int>(type: "int", nullable: false),
                     Fojas = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     InscriptionNumber = table.Column<int>(type: "int", nullable: false),
-                    InscriptionDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    InscriptionDate = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "GETDATE()")
                 },
                 constraints: table =>
                 {
