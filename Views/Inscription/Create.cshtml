@@ -4,69 +4,68 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Inscription</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Cne" class="control-label"></label>
-                <input asp-for="Cne" class="form-control" />
-                <span asp-validation-for="Cne" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Commune" class="control-label"></label>
-                <input asp-for="Commune" class="form-control" />
-                <span asp-validation-for="Commune" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Block" class="control-label"></label>
-                <input asp-for="Block" class="form-control" />
-                <span asp-validation-for="Block" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Property" class="control-label"></label>
-                <input asp-for="Property" class="form-control" />
-                <span asp-validation-for="Property" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Sellers" class="control-label"></label>
-                <input asp-for="Sellers" class="form-control" />
-                <span asp-validation-for="Sellers" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Buyers" class="control-label"></label>
-                <input asp-for="Buyers" class="form-control" />
-                <span asp-validation-for="Buyers" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Fojas" class="control-label"></label>
-                <input asp-for="Fojas" class="form-control" />
-                <span asp-validation-for="Fojas" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="InscriptionNumber" class="control-label"></label>
-                <input asp-for="InscriptionNumber" class="form-control" />
-                <span asp-validation-for="InscriptionNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="InscriptionDate" class="control-label"></label>
-                <input asp-for="InscriptionDate" class="form-control" />
-                <span asp-validation-for="InscriptionDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<form method="post">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Create Inscription</h2>
+            <hr />   
+        </div>
+        <div class="mb-3">
+            <label asp-for="Cne"></label>
+            <input asp-for="Cne" class="form-control" />
+            <span asp-validation-for="Cne" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Commune"></label>
+            <input asp-for="Commune" class="form-control" />
+            <span asp-validation-for="Commune" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Block"></label>
+            <input asp-for="Block" class="form-control" />
+            <span asp-validation-for="Block" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Property"></label>
+            <input asp-for="Property" class="form-control" />
+            <span asp-validation-for="Property" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Sellers"></label>
+            <input asp-for="Sellers" class="form-control" />
+            <span asp-validation-for="Sellers" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Buyers"></label>
+            <input asp-for="Buyers" class="form-control" />
+            <span asp-validation-for="Buyers" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Fojas"></label>
+            <input asp-for="Fojas" class="form-control" />
+            <span asp-validation-for="Fojas" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="InscriptionNumber"></label>
+            <input asp-for="InscriptionNumber" class="form-control" />
+            <span asp-validation-for="InscriptionNumber" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="InscriptionDate"></label>
+            <input asp-for="InscriptionDate" class="form-control" />
+            <span asp-validation-for="InscriptionDate" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
+        
+        <a asp-controller="innscription" asp-action="Index" class="btn btn-secondary style="width:150px">
+            Back to List
+        </a>
+        
     </div>
-</div>
+</form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
