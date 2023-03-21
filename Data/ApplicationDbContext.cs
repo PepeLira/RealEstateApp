@@ -11,5 +11,6 @@ namespace RealEstateApp.Data
 
 
         public DbSet<Inscription> Inscriptions { get; set; }
+        public DbSet<MultiOwner> MultiOwners { get; set; }
     }
 }
