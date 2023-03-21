@@ -13,11 +13,15 @@ namespace RealEstateApp.Data
         public DbSet<Inscription> Inscriptions { get; set; }
         public DbSet<MultiOwner> MultiOwners { get; set; }
         public DbSet<Seller> Sellers { get; set; }
+        public DbSet<Buyer> Buyers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Seller>()
                 .HasIndex(seller => seller.Rut)
+                .IsUnique();
+            modelBuilder.Entity<Buyer>()
+                .HasIndex(buyer => buyer.Rut)
                 .IsUnique();
         }
 
