@@ -45,7 +45,7 @@ namespace RealEstateApp.Migrations
                     b.HasIndex("Rut")
                         .IsUnique();
 
-                    b.ToTable("Buyers");
+                    b.ToTable("Buyers", (string)null);
                 });
 
             modelBuilder.Entity("RealEstateApp.Models.Inscription", b =>
@@ -90,7 +90,7 @@ namespace RealEstateApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Inscriptions");
+                    b.ToTable("Inscriptions", (string)null);
                 });
 
             modelBuilder.Entity("RealEstateApp.Models.MultiOwner", b =>
@@ -137,7 +137,7 @@ namespace RealEstateApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MultiOwners");
+                    b.ToTable("MultiOwners", (string)null);
                 });
 
             modelBuilder.Entity("RealEstateApp.Models.Seller", b =>
@@ -163,7 +163,7 @@ namespace RealEstateApp.Migrations
                     b.HasIndex("Rut")
                         .IsUnique();
 
-                    b.ToTable("Sellers");
+                    b.ToTable("Sellers", (string)null);
                 });
 #pragma warning restore 612, 618
         }
