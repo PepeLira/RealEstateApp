@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using RealEstateApp.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace RealEstateApp.Models
 {
@@ -7,13 +9,25 @@ namespace RealEstateApp.Models
         [Key]
         public int Id { get; set; }
         public String Cne { get; set; }
-        public String Commune { get; set; } // comuna
-        public String Block { get; set; } // Manzana 
-        public String Property { get; set; } // predio
-        public String Sellers { get; set; } // enajenantes
-        public String Buyers { get; set; } // adquirentes
+        public int Commune { get; set; }
+        public int Block { get; set; }
+        public String Property { get; set; }
+        public String Seller { get; set; }
+        public String Buyer { get; set; }
         public String Fojas { get; set; }
         public int InscriptionNumber { get; set; }
         public DateTime InscriptionDate { get; set; } = DateTime.Now;
     }
 }
+
+/// Model Description
+/// 
+/// Cne      ==> Codigo de Naturaleza de la Escritura (Compraventa / Regularización de Patrimonio)
+/// Commune  ==> Comuna
+/// Block    ==> Manzana
+/// Property ==> Predio
+/// Sellers  ==> Enajenantes
+/// Buyers   ==> Adquirentes
+/// Fojas
+/// InscriptionNumber
+/// InscriptionDate
