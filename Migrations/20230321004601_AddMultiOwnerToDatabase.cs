@@ -21,7 +21,7 @@ namespace RealEstateApp.Migrations
                     Block = table.Column<int>(type: "int", nullable: false),
                     Property = table.Column<int>(type: "int", nullable: false),
                     Owner = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RoyaltyPer = table.Column<int>(type: "int", nullable: false),
+                    RoyaltyPer = table.Column<int>(type: "int", nullable: true),
                     Fojas = table.Column<int>(type: "int", nullable: false),
                     InscriptionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     InscriptionYear = table.Column<int>(type: "int", nullable: false),
