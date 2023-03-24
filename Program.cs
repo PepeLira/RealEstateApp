@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using RealEstateApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,15 +9,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 
-var app = builder.Build();
 
-// Seed the database with fake data
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var dbContext = services.GetRequiredService<ApplicationDbContext>();
-    SeedData.AddData(dbContext);
-}
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -26,6 +18,15 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<ApplicationDbContext>();
+    context.Database.EnsureCreated();
+    SeedData.AddSeedData(context);
 }
 
 app.UseHttpsRedirection();

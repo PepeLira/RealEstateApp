@@ -4,15 +4,25 @@ namespace RealEstateApp.Data
 {
     public static class SeedData
     {
+        public static void Initialize(ApplicationDbContext context)
+        {
+            
+        }
         public static DateTime getRandomDate()
         {
             return DateTime.Now.AddDays(new Random().Next(100, 500));
         }
-        public static void AddData(ApplicationDbContext dbContext)
+        public static void AddSeedData(ApplicationDbContext context)
         {
             Random random = new Random();
 
-            dbContext.Buyers.AddRange(
+            // Look for any students.
+            if (context.Inscriptions.Any())
+            {
+                return;   // DB has been seeded
+            }
+
+            context.Buyers.AddRange(
                 new Buyer
                 {
                     Rut = "19.434.234-0",
@@ -27,7 +37,7 @@ namespace RealEstateApp.Data
                 }
             );
 
-            dbContext.Sellers.AddRange(
+            context.Sellers.AddRange(
                 new Seller
                 {
                     Rut = "19.434.234-0",
@@ -42,14 +52,16 @@ namespace RealEstateApp.Data
                 }
             );
 
-            Seller seller_1 = dbContext.Sellers.ToList()[0];
-            Seller seller_2 = dbContext.Sellers.ToList()[1];
+            context.SaveChanges();
 
-            Buyer buyer_1 = dbContext.Buyers.ToList()[0];
-            Buyer buyer_2 = dbContext.Buyers.ToList()[1];
+            Seller seller_1 = context.Sellers.ToList()[0];
+            Seller seller_2 = context.Sellers.ToList()[1];
+
+            Buyer buyer_1 = context.Buyers.ToList()[0];
+            Buyer buyer_2 = context.Buyers.ToList()[1];
 
 
-            dbContext.Inscriptions.AddRange(
+            context.Inscriptions.AddRange(
                 new Inscription {
                     Cne = "Compraventa",
                     Commune = random.Next(1, 100),
@@ -81,7 +93,7 @@ namespace RealEstateApp.Data
 
             DateTime inscriptionDate = getRandomDate();
 
-            dbContext.MultiOwners.AddRange(
+            context.MultiOwners.AddRange(
                 new MultiOwner
                 {
                     Commune = random.Next(1, 100),
@@ -124,15 +136,8 @@ namespace RealEstateApp.Data
                     InitialEffectiveYear = random.Next(2020, 2050),
                 }
             );
-
-            try
-            {
-                dbContext.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine( "Test data already created", e.ToString() );
-            }
+                
+            context.SaveChanges();
         }
     }
 }
