@@ -16,7 +16,8 @@ namespace RealEstateApp.Models
         public int InscriptionYear { get; set; }
         public int InscriptionNumber { get; set; }
         public int InitialEffectiveYear { get; set; }
-        public int FinalEffectiveYear { get; set; }
+        [DisplayFormat(NullDisplayText = "Indefinido")]
+        public int? FinalEffectiveYear { get; set; }
     }
 }
 
