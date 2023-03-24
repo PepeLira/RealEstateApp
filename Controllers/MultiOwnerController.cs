@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Data;
 using RealEstateApp.Models;
+using System.Linq.Expressions;
 
 namespace RealEstateApp.Controllers
 {
@@ -12,10 +13,31 @@ namespace RealEstateApp.Controllers
         {
             _db = db;
         }
-        public IActionResult Index()
+        public ActionResult Index(int? year, int? commune, int? block, int? property)
         {
-            IEnumerable<MultiOwner> objMultiOwnerList = _db.MultiOwners.ToList();
-            return View(objMultiOwnerList);
+            var multiOwners = _db.MultiOwners.AsQueryable();
+
+            if (year != null)
+            {
+                multiOwners = multiOwners.Where(m => m.InscriptionYear == year);
+            }
+
+            if (commune != null)
+            {
+                multiOwners = multiOwners.Where(m => m.Commune == commune);
+            }
+
+            if (block != null)
+            {
+                multiOwners = multiOwners.Where(m => m.Block == block);
+            }
+
+            if (property != null)
+            {
+                multiOwners = multiOwners.Where(m => m.Property == property);
+            }
+
+            return View(multiOwners.ToList());
         }
     }
 }

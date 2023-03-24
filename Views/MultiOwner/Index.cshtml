@@ -1,95 +1,67 @@
 ﻿@model IEnumerable<RealEstateApp.Models.MultiOwner>
 
-@{
-    ViewData["Title"] = "Index";
+<h2>MultiOwner Index</h2>
+
+@using (Html.BeginForm("Index", "MultiOwner", FormMethod.Get))
+{
+    <div class="form-group">
+        <label for="year">Year:</label>
+        @Html.TextBox("year", ViewBag.Year as int?, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label for="commune">Commune:</label>
+        @Html.TextBox("commune", ViewBag.Commune as int?, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label for="block">Block:</label>
+        @Html.TextBox("block", ViewBag.Block as int?, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label for="property">Property:</label>
+        @Html.TextBox("property", ViewBag.Property as int?, new { @class = "form-control" })
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Search</button>
+    <br />
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Commune)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Block)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Property)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Owner)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RoyaltyPercentage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fojas)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InscriptionDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InscriptionYear)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InscriptionNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InitialEffectiveYear)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FinalEffectiveYear)
-            </th>
-            <th></th>
+            <th>Id</th>
+            <th>Commune</th>
+            <th>Block</th>
+            <th>Property</th>
+            <th>Owner</th>
+            <th>RoyaltyPercentage</th>
+            <th>Fojas</th>
+            <th>InscriptionDate</th>
+            <th>InscriptionYear</th>
+            <th>InscriptionNumber</th>
+            <th>InitialEffectiveYear</th>
+            <th>FinalEffectiveYear</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Commune)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Block)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Property)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Owner)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.RoyaltyPercentage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fojas)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InscriptionDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InscriptionYear)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InscriptionNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InitialEffectiveYear)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FinalEffectiveYear)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                <td>@Html.DisplayFor(modelItem => item.Commune)</td>
+                <td>@Html.DisplayFor(modelItem => item.Block)</td>
+                <td>@Html.DisplayFor(modelItem => item.Property)</td>
+                <td>@Html.DisplayFor(modelItem => item.Owner)</td>
+                <td>@Html.DisplayFor(modelItem => item.RoyaltyPercentage)</td>
+                <td>@Html.DisplayFor(modelItem => item.Fojas)</td>
+                <td>@Html.DisplayFor(modelItem => item.InscriptionDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.InscriptionYear)</td>
+                <td>@Html.DisplayFor(modelItem => item.InscriptionNumber)</td>
+                <td>@Html.DisplayFor(modelItem => item.InitialEffectiveYear)</td>
+                <td>@Html.DisplayFor(modelItem => item.FinalEffectiveYear)</td>
+            </tr>
+        }
     </tbody>
 </table>
