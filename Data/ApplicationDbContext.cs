@@ -23,7 +23,14 @@ namespace RealEstateApp.Data
             modelBuilder.Entity<Buyer>()
                 .HasIndex(buyer => buyer.Rut)
                 .IsUnique();
+            modelBuilder.Entity<Inscription>()
+                .HasOne(inscription => inscription.Seller)
+                .WithMany(seller => seller.Inscriptions)
+                .HasForeignKey(inscription => inscription.SellerId);
+            modelBuilder.Entity<Inscription>()
+                .HasOne(inscription => inscription.Buyer)
+                .WithMany(buyer => buyer.Inscriptions)
+                .HasForeignKey(inscription => inscription.BuyerId);
         }
-
     }
 }

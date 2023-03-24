@@ -12,11 +12,14 @@ namespace RealEstateApp.Models
         public int Commune { get; set; }
         public int Block { get; set; }
         public String Property { get; set; }
-        public String Seller { get; set; }
-        public String Buyer { get; set; }
+        public Seller Seller { get; set; }
+        public Buyer Buyer { get; set; }
         public String Fojas { get; set; }
         public int InscriptionNumber { get; set; }
         public DateTime InscriptionDate { get; set; } = DateTime.Now;
+
+        public int SellerId { get; set; }
+        public int BuyerId { get; set; }
     }
 }
 
