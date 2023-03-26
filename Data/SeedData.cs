@@ -43,7 +43,7 @@ namespace RealEstateApp.Data
 
             var seller_1 = new Seller
             {
-                Rut = "19.434.234-0",
+                Rut = "19.434.300-0",
                 Name = "Pepe",
                 RoyaltyPercentage = random.Next(1, 100),
                 UnaccreditedRoyaltyPercentage = random.Next(1, 100)
@@ -51,7 +51,7 @@ namespace RealEstateApp.Data
 
             var seller_2 = new Seller
             {
-                Rut = "19.434.434-0",
+                Rut = "19.434.234-0",
                 Name = "Rafa",
                 RoyaltyPercentage = random.Next(1, 100),
                 UnaccreditedRoyaltyPercentage = random.Next(1, 100)
