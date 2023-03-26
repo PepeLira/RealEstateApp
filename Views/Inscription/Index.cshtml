@@ -25,10 +25,10 @@
                 @Html.DisplayNameFor(model => model.Property)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Seller)
+                @Html.DisplayNameFor(model => model.Sellers)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Buyer)
+                @Html.DisplayNameFor(model => model.Buyers)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Fojas)
@@ -58,10 +58,10 @@
                 @Html.DisplayFor(modelItem => item.Property)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SellerId)
+                @Html.DisplayFor(modelItem => item.Sellers.First().Rut)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BuyerId)
+                    @Html.DisplayFor(modelItem => item.Buyers.First().Rut)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Fojas)

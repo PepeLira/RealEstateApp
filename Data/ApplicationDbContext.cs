@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore;
 using RealEstateApp.Models;
 
 namespace RealEstateApp.Data
@@ -10,6 +9,11 @@ namespace RealEstateApp.Data
         
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies(); // Enable lazy loading
+        }
+
         public DbSet<Inscription> Inscriptions { get; set; }
         public DbSet<MultiOwner> MultiOwners { get; set; }
         public DbSet<Seller> Sellers { get; set; }
@@ -17,20 +21,18 @@ namespace RealEstateApp.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Seller>()
+            modelBuilder.Entity<Seller>().ToTable(nameof(Seller))
                 .HasIndex(seller => seller.Rut)
                 .IsUnique();
-            modelBuilder.Entity<Buyer>()
+            modelBuilder.Entity<Buyer>().ToTable(nameof(Buyer))
                 .HasIndex(buyer => buyer.Rut)
                 .IsUnique();
-            modelBuilder.Entity<Inscription>()
-                .HasOne(inscription => inscription.Seller)
-                .WithMany(seller => seller.Inscriptions)
-                .HasForeignKey(inscription => inscription.SellerId);
-            modelBuilder.Entity<Inscription>()
-                .HasOne(inscription => inscription.Buyer)
-                .WithMany(buyer => buyer.Inscriptions)
-                .HasForeignKey(inscription => inscription.BuyerId);
+            modelBuilder.Entity<Inscription>().ToTable(nameof(Inscription))
+                .HasMany(inscription => inscription.Sellers)
+                .WithMany(sellers => sellers.Inscriptions);
+            modelBuilder.Entity<Inscription>().ToTable(nameof(Inscription))
+                .HasMany(inscriptions => inscriptions.Buyers)
+                .WithMany(buyers => buyers.Inscriptions);
         }
     }
 }
