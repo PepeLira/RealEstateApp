@@ -63,7 +63,7 @@ namespace RealEstateApp.Data
             context.Inscriptions.AddRange(
                 new Inscription {
                     Cne = "Compraventa",
-                    Commune = random.Next(1, 100),
+                    Commune = "Las Condes",
                     Block = random.Next(1, 100),
                     Property = "SomeProperty",
                     Sellers = new List<Seller> { seller_1 },
@@ -75,7 +75,7 @@ namespace RealEstateApp.Data
                 new Inscription
                 {
                     Cne = "Compraventa",
-                    Commune = random.Next(1, 100),
+                    Commune = "Nunoa",
                     Block = random.Next(1, 100),
                     Property = "SomeProperty",
                     Sellers = new List<Seller> { seller_2 },
@@ -91,7 +91,7 @@ namespace RealEstateApp.Data
             context.MultiOwners.AddRange(
                 new MultiOwner
                 {
-                    Commune = random.Next(1, 100),
+                    Commune = "Las Condes",
                     Block = random.Next(1, 100),
                     Property = random.Next(1, 100),
                     Owner = "Juanin",
@@ -105,7 +105,7 @@ namespace RealEstateApp.Data
                 },
                 new MultiOwner
                 {
-                    Commune = random.Next(1, 100),
+                    Commune = "Nunoa",
                     Block = random.Next(1, 100),
                     Property = random.Next(1, 100),
                     Owner = "Juanin2",
@@ -119,7 +119,7 @@ namespace RealEstateApp.Data
                 },
                 new MultiOwner
                 {
-                    Commune = random.Next(1, 100),
+                    Commune = "Vitacura",
                     Block = random.Next(1, 100),
                     Property = random.Next(1, 100),
                     Owner = "Juanin3",

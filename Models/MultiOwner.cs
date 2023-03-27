@@ -6,7 +6,7 @@ namespace RealEstateApp.Models
     {
         [Key]
         public int Id { get; set; }
-        public int Commune { get; set; }
+        public String Commune { get; set; }
         public int Block { get; set; }
         public int Property { get; set; }
         public string Owner { get; set; }

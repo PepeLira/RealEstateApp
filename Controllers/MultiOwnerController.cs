@@ -24,7 +24,7 @@ namespace RealEstateApp.Controllers
 
             if (commune != null)
             {
-                multiOwners = multiOwners.Where(m => m.Commune == commune);
+                multiOwners = multiOwners.Where(m => m.Commune.Equals(commune));
             }
 
             if (block != null)

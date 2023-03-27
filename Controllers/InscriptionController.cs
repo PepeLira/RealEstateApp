@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace RealEstateApp.Controllers
 {
@@ -23,6 +24,11 @@ namespace RealEstateApp.Controllers
         }
         public IActionResult Create()
         {
+            var options = Enum.GetNames(typeof(CommuneOptions));
+            var selectList = new SelectList(options);
+
+            ViewBag.CommuneOptions = selectList;
+
             return View();
         }
 

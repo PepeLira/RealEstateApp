@@ -15,10 +15,12 @@
             <input asp-for="Cne" class="form-control" />
             <span asp-validation-for="Cne" class="text-danger"></span>
         </div>
-        <div class="mb-3">
-            <label asp-for="Commune"></label>
-            <input asp-for="Commune" class="form-control" />
-            <span asp-validation-for="Commune" class="text-danger"></span>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Commune, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Commune, (SelectList)ViewBag.CommuneOptions, "-- Select --", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Commune, "", new { @class = "text-danger" })
+            </div>
         </div>
         <div class="mb-3">
             <label asp-for="Block"></label>
