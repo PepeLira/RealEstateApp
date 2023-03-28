@@ -13,7 +13,7 @@ namespace RealEstateApp.Controllers
         {
             _db = db;
         }
-        public ActionResult Index(int? year, int? commune, int? block, int? property)
+        public ActionResult Index(int? year, string commune, int? block, int? property)
         {
             var multiOwners = _db.MultiOwners.AsQueryable();
 
@@ -22,7 +22,7 @@ namespace RealEstateApp.Controllers
                 multiOwners = multiOwners.Where(m => m.InscriptionYear == year);
             }
 
-            if (commune != null)
+            if (!string.IsNullOrEmpty(commune))
             {
                 multiOwners = multiOwners.Where(m => m.Commune.Equals(commune));
             }
