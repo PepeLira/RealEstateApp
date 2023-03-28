@@ -22,8 +22,10 @@ namespace RealEstateApp.Models
     public enum CommuneOptions
     {
         LasCondes,
-        Nuñoa,
-        Vitacura
+        Ñuñoa,
+        Vitacura,
+        Providencia,
+        LaReina
     }
     public enum CneOptions
     {
