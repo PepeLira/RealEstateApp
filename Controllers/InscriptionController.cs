@@ -24,8 +24,11 @@ namespace RealEstateApp.Controllers
         }
         public IActionResult Create()
         {
-            var options = Enum.GetNames(typeof(CommuneOptions));
-            var ComuneSelectList = new SelectList(options);
+            var communeOptions = Enum.GetNames(typeof(CommuneOptions));
+            var ComuneSelectList = new SelectList(communeOptions);
+
+            var cneOptions = Enum.GetNames(typeof(CneOptions));
+            var CneSelectList = new SelectList(cneOptions);
 
             var buyersOptions = _db.Buyers.Select(item => new SelectListItem
             {
@@ -47,6 +50,7 @@ namespace RealEstateApp.Controllers
             };
 
             ViewBag.CommuneOptions = ComuneSelectList;
+            ViewBag.CneOptions = CneSelectList;
 
             return View(viewModel);
         }

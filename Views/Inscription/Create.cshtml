@@ -10,10 +10,12 @@
             <h2 class="text-primary">Create Inscription</h2>
             <hr />   
         </div>
-        <div class="mb-3">
-            <label asp-for="NewInscription.Cne"></label>
-            <input asp-for="NewInscription.Cne" class="form-control" />
-            <span asp-validation-for="NewInscription.Cne" class="text-danger"></span>
+        <div class="form-group">
+            @Html.LabelFor(model => model.NewInscription.Cne, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.NewInscription.Cne, (SelectList)ViewBag.CneOptions, "-- Select --", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.NewInscription.Cne, "", new { @class = "text-danger" })
+            </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.NewInscription.Commune, htmlAttributes: new { @class = "control-label col-md-2" })

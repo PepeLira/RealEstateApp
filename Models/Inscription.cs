@@ -22,9 +22,15 @@ namespace RealEstateApp.Models
     public enum CommuneOptions
     {
         LasCondes,
-        Nunoa,
+        Nuñoa,
         Vitacura
     }
+    public enum CneOptions
+    {
+        Compraventa,
+        RegularizaciónDePatrimonio
+    }
+
 }
 
 /// Model Description
