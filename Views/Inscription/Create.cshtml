@@ -1,4 +1,4 @@
-﻿@model RealEstateApp.Models.Inscription
+﻿@model RealEstateApp.ViewModels.Insciption.CreateViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -11,46 +11,48 @@
             <hr />   
         </div>
         <div class="mb-3">
-            <label asp-for="Cne"></label>
-            <input asp-for="Cne" class="form-control" />
-            <span asp-validation-for="Cne" class="text-danger"></span>
+            <label asp-for="NewInscription.Cne"></label>
+            <input asp-for="NewInscription.Cne" class="form-control" />
+            <span asp-validation-for="NewInscription.Cne" class="text-danger"></span>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.Commune, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.NewInscription.Commune, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.Commune, (SelectList)ViewBag.CommuneOptions, "-- Select --", htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Commune, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.NewInscription.Commune, (SelectList)ViewBag.CommuneOptions, "-- Select --", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.NewInscription.Commune, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="mb-3">
-            <label asp-for="Block"></label>
-            <input asp-for="Block" class="form-control" />
-            <span asp-validation-for="Block" class="text-danger"></span>
+            <label asp-for="NewInscription.Block"></label>
+            <input asp-for="NewInscription.Block" class="form-control" />
+            <span asp-validation-for="NewInscription.Block" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="Property"></label>
-            <input asp-for="Property" class="form-control" />
-            <span asp-validation-for="Property" class="text-danger"></span>
+            <label asp-for="NewInscription.Property"></label>
+            <input asp-for="NewInscription.Property" class="form-control" />
+            <span asp-validation-for="NewInscription.Property" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.NewInscription.Sellers, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(x => x.SelectedSellerId, Model.AvailableSellers, "-- Select --", new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.NewInscription.Buyers, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(x => x.SelectedBuyerId, Model.AvailableBuyers, "-- Select --", new { @class = "form-control" })
+            </div>
         </div>
         <div class="mb-3">
-            <label asp-for="Sellers"></label>
-            <input asp-for="Sellers" class="form-control" />
-            <span asp-validation-for="Sellers" class="text-danger"></span>
+            <label asp-for="NewInscription.Fojas"></label>
+            <input asp-for="NewInscription.Fojas" class="form-control" />
+            <span asp-validation-for="NewInscription.Fojas" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="Buyers"></label>
-            <input asp-for="Buyers" class="form-control" />
-            <span asp-validation-for="Buyers" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label asp-for="Fojas"></label>
-            <input asp-for="Fojas" class="form-control" />
-            <span asp-validation-for="Fojas" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label asp-for="InscriptionNumber"></label>
-            <input asp-for="InscriptionNumber" class="form-control" />
-            <span asp-validation-for="InscriptionNumber" class="text-danger"></span>
+            <label asp-for="NewInscription.InscriptionNumber"></label>
+            <input asp-for="NewInscription.InscriptionNumber" class="form-control" />
+            <span asp-validation-for="NewInscription.InscriptionNumber" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
         

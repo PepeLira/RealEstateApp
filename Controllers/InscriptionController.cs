@@ -1,8 +1,10 @@
 ﻿using RealEstateApp.Data;
 using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Models;
+using RealEstateApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using RealEstateApp.ViewModels.Insciption;
 
 namespace RealEstateApp.Controllers
 {
@@ -15,8 +17,6 @@ namespace RealEstateApp.Controllers
             _db = db;
         }
 
-        
-
         public IActionResult Index()
         {
             IEnumerable<Inscription> objInscriptionList = _db.Inscriptions.ToList();
@@ -25,11 +25,30 @@ namespace RealEstateApp.Controllers
         public IActionResult Create()
         {
             var options = Enum.GetNames(typeof(CommuneOptions));
-            var selectList = new SelectList(options);
+            var ComuneSelectList = new SelectList(options);
 
-            ViewBag.CommuneOptions = selectList;
+            var buyersOptions = _db.Buyers.Select(item => new SelectListItem
+            {
+                Value = item.Id.ToString(),
+                Text = item.Rut
+            }).ToList();
 
-            return View();
+            var sellersOptions = _db.Sellers.Select(item => new SelectListItem
+            {
+                Value = item.Id.ToString(),
+                Text = item.Rut
+            }).ToList();
+
+            var viewModel = new CreateViewModel
+            {
+                NewInscription = new Inscription(),
+                AvailableBuyers = buyersOptions,
+                AvailableSellers = sellersOptions
+            };
+
+            ViewBag.CommuneOptions = ComuneSelectList;
+
+            return View(viewModel);
         }
 
         public IActionResult Details(int id)
@@ -41,11 +60,21 @@ namespace RealEstateApp.Controllers
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Inscription obj)
+        public IActionResult Create(CreateViewModel viewModel)
         {
-            _db.Inscriptions.Add(obj);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
+            var inscription = viewModel.NewInscription;
+            Buyer? selected_buyer = _db.Buyers.Find(viewModel.SelectedBuyerId);
+            Seller? selected_seller = _db.Sellers.Find(viewModel.SelectedSellerId);
+
+            if (inscription != null && selected_buyer != null && selected_seller != null)
+            {
+                selected_buyer.Inscriptions.Add(inscription);
+                selected_seller.Inscriptions.Add(inscription);
+
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Create");
         }
     }
 }
