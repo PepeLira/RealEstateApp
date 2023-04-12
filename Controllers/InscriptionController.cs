@@ -10,16 +10,16 @@ namespace RealEstateApp.Controllers
 {
     public class InscriptionController : Controller
     {
-        private readonly ApplicationDbContext dbContext;
+        private readonly ApplicationDbContext applicationDbContext;
 
         public InscriptionController(ApplicationDbContext dbContext)
         {
-            this.dbContext = dbContext;
+            applicationDbContext = dbContext;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Inscription> objInscriptionList = dbContext.Inscriptions.ToList();
+            IEnumerable<Inscription> objInscriptionList = applicationDbContext.Inscriptions.ToList();
             return View(objInscriptionList);
         }
 
@@ -30,13 +30,13 @@ namespace RealEstateApp.Controllers
             var cneOptions = Enum.GetNames(typeof(CneOptions));
             var cneSelectList = new SelectList(cneOptions);
 
-            var buyersOptions = dbContext.Buyers.Select(item => new SelectListItem
+            var buyersOptions = applicationDbContext.Buyers.Select(item => new SelectListItem
             {
                 Value = item.Id.ToString(),
                 Text = item.Rut
             }).ToList();
 
-            var sellersOptions = dbContext.Sellers.Select(item => new SelectListItem
+            var sellersOptions = applicationDbContext.Sellers.Select(item => new SelectListItem
             {
                 Value = item.Id.ToString(),
                 Text = item.Rut
@@ -56,7 +56,7 @@ namespace RealEstateApp.Controllers
 
         public ViewResult Details(int id)
         {
-            Inscription inscription = dbContext.Inscriptions.Find(id);
+            Inscription inscription = applicationDbContext.Inscriptions.Find(id);
             return View(inscription);
         }
 
@@ -66,14 +66,14 @@ namespace RealEstateApp.Controllers
         public IActionResult Create(CreateViewModel viewModel)
         {
             var inscription = viewModel.NewInscription;
-            Buyer? selected_buyer = dbContext.Buyers.Find(viewModel.SelectedBuyerId);
-            Seller? selected_seller = dbContext.Sellers.Find(viewModel.SelectedSellerId);
+            Buyer? selected_buyer = applicationDbContext.Buyers.Find(viewModel.SelectedBuyerId);
+            Seller? selected_seller = applicationDbContext.Sellers.Find(viewModel.SelectedSellerId);
 
             if (inscription != null && selected_buyer != null && selected_seller != null)
             {
                 selected_buyer.Inscriptions.Add(inscription);
                 selected_seller.Inscriptions.Add(inscription);
-                dbContext.SaveChanges();
+                applicationDbContext.SaveChanges();
                 return RedirectToAction("Index");
             }
 

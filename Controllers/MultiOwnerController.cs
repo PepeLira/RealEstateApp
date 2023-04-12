@@ -7,34 +7,35 @@ namespace RealEstateApp.Controllers
 {
     public class MultiOwnerController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly ApplicationDbContext applicationDbContext;
 
-        public MultiOwnerController(ApplicationDbContext db)
+        public MultiOwnerController(ApplicationDbContext dbContext)
         {
-            _db = db;
+            applicationDbContext = dbContext;
         }
+
         public ActionResult Index(int? year, string commune, int? block, int? property)
         {
-            var multiOwners = _db.MultiOwners.AsQueryable();
+            var multiOwners = applicationDbContext.MultiOwners.AsQueryable();
 
             if (year != null)
             {
-                multiOwners = multiOwners.Where(m => m.InscriptionYear == year);
+                multiOwners = multiOwners.Where(multiOwner => multiOwner.InscriptionYear == year);
             }
 
             if (!string.IsNullOrEmpty(commune))
             {
-                multiOwners = multiOwners.Where(m => m.Commune.Equals(commune));
+                multiOwners = multiOwners.Where(multiOwner => multiOwner.Commune.Equals(commune));
             }
 
             if (block != null)
             {
-                multiOwners = multiOwners.Where(m => m.Block == block);
+                multiOwners = multiOwners.Where(multiOwner => multiOwner.Block == block);
             }
 
             if (property != null)
             {
-                multiOwners = multiOwners.Where(m => m.Property == property);
+                multiOwners = multiOwners.Where(multiOwner => multiOwner.Property == property);
             }
 
             return View(multiOwners.ToList());
