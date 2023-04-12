@@ -22,11 +22,11 @@ namespace RealEstateApp.Controllers
             IEnumerable<Inscription> objInscriptionList = dbContext.Inscriptions.ToList();
             return View(objInscriptionList);
         }
+
         public IActionResult Create()
         {
             var communeOptions = Enum.GetNames(typeof(CommuneOptions));
             var comuneSelectList = new SelectList(communeOptions);
-
             var cneOptions = Enum.GetNames(typeof(CneOptions));
             var cneSelectList = new SelectList(cneOptions);
 
@@ -51,7 +51,6 @@ namespace RealEstateApp.Controllers
 
             ViewBag.CommuneOptions = comuneSelectList;
             ViewBag.CneOptions = cneSelectList;
-
             return View(viewModel);
         }
 
@@ -74,10 +73,10 @@ namespace RealEstateApp.Controllers
             {
                 selected_buyer.Inscriptions.Add(inscription);
                 selected_seller.Inscriptions.Add(inscription);
-
                 dbContext.SaveChanges();
                 return RedirectToAction("Index");
             }
+
             return RedirectToAction("Create");
         }
     }
