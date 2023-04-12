@@ -4,14 +4,13 @@ namespace RealEstateApp.Data
 {
     public static class SeedData
     {
-        public static void Initialize(ApplicationDbContext context)
-        {
-            
-        }
+        public static void Initialize(ApplicationDbContext context){ }
+
         public static DateTime getRandomDate()
         {
             return DateTime.Now.AddDays(new Random().Next(100, 500));
         }
+
         public static void AddSeedData(ApplicationDbContext context)
         {
             Random random = new Random();
@@ -38,7 +37,6 @@ namespace RealEstateApp.Data
                 UnaccreditedRoyaltyPercentage = random.Next(1, 100)
             };
 
-
             context.Buyers.AddRange(buyer_1,buyer_2);
 
             var seller_1 = new Seller
@@ -58,7 +56,6 @@ namespace RealEstateApp.Data
             };
 
             context.Sellers.AddRange(seller_1,seller_2);
-
 
             context.Inscriptions.AddRange(
                 new Inscription {
