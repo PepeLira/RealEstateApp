@@ -15,56 +15,17 @@ namespace RealEstateApp.Data
         {
             Random random = new Random();
 
-            // Look for any students.
             if (context.Inscriptions.Any())
             {
                 return;   // DB has been seeded
-            }
-
-            var buyer_1 = new Buyer
-            {
-                Rut = "19.434.234-0",
-                Name = "Rafa",
-                RoyaltyPercentage = random.Next(1, 100),
-                UnaccreditedRoyaltyPercentage = random.Next(1, 100)
-            };
-
-            var buyer_2 = new Buyer
-            {
-                Rut = "19.434.300-0",
-                Name = "Pepe",
-                RoyaltyPercentage = random.Next(1, 100),
-                UnaccreditedRoyaltyPercentage = random.Next(1, 100)
-            };
-
-            context.Buyers.AddRange(buyer_1,buyer_2);
-
-            var seller_1 = new Seller
-            {
-                Rut = "19.434.300-0",
-                Name = "Pepe",
-                RoyaltyPercentage = random.Next(1, 100),
-                UnaccreditedRoyaltyPercentage = random.Next(1, 100)
-            };
-
-            var seller_2 = new Seller
-            {
-                Rut = "19.434.234-0",
-                Name = "Rafa",
-                RoyaltyPercentage = random.Next(1, 100),
-                UnaccreditedRoyaltyPercentage = random.Next(1, 100)
-            };
-
-            context.Sellers.AddRange(seller_1,seller_2);
+            }                  
 
             context.Inscriptions.AddRange(
                 new Inscription {
                     Cne = "Compraventa",
                     Commune = "Las Condes",
                     Block = random.Next(1, 100),
-                    Property = "SomeProperty",
-                    Sellers = new List<Seller> { seller_1 },
-                    Buyers = new List<Buyer> { buyer_1 },
+                    Property = "SomeProperty",                 
                     Fojas = "Foja 1",
                     InscriptionNumber = random.Next(1, 100),
                     InscriptionDate = getRandomDate()
@@ -74,9 +35,7 @@ namespace RealEstateApp.Data
                     Cne = "Compraventa",
                     Commune = "Nunoa",
                     Block = random.Next(1, 100),
-                    Property = "SomeProperty",
-                    Sellers = new List<Seller> { seller_2 },
-                    Buyers = new List<Buyer> { buyer_2 },
+                    Property = "SomeProperty",                    
                     Fojas = "Foja 2",
                     InscriptionNumber = 2,
                     InscriptionDate = getRandomDate()

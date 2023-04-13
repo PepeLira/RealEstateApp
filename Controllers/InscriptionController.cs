@@ -30,23 +30,9 @@ namespace RealEstateApp.Controllers
             var cneOptions = Enum.GetNames(typeof(CneOptions));
             var cneSelectList = new SelectList(cneOptions);
 
-            var buyersOptions = applicationDbContext.Buyers.Select(item => new SelectListItem
-            {
-                Value = item.Id.ToString(),
-                Text = item.Rut
-            }).ToList();
-
-            var sellersOptions = applicationDbContext.Sellers.Select(item => new SelectListItem
-            {
-                Value = item.Id.ToString(),
-                Text = item.Rut
-            }).ToList();
-
             var viewModel = new CreateViewModel
             {
-                NewInscription = new Inscription(),
-                AvailableBuyers = buyersOptions,
-                AvailableSellers = sellersOptions
+                NewInscription = new Inscription(),               
             };
 
             ViewBag.CommuneOptions = comuneSelectList;
@@ -65,14 +51,10 @@ namespace RealEstateApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(CreateViewModel viewModel)
         {
-            var inscription = viewModel.NewInscription;
-            Buyer? selected_buyer = applicationDbContext.Buyers.Find(viewModel.SelectedBuyerId);
-            Seller? selected_seller = applicationDbContext.Sellers.Find(viewModel.SelectedSellerId);
+            var inscription = viewModel.NewInscription;            
 
-            if (inscription != null && selected_buyer != null && selected_seller != null)
+            if (inscription != null )
             {
-                selected_buyer.Inscriptions.Add(inscription);
-                selected_seller.Inscriptions.Add(inscription);
                 applicationDbContext.SaveChanges();
                 return RedirectToAction("Index");
             }

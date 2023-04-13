@@ -12,8 +12,8 @@ using RealEstateApp.Data;
 namespace RealEstateApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230323020657_RenameBuyerSellerParameter")]
-    partial class RenameBuyerSellerParameter
+    [Migration("20230413014035_FixDatabase")]
+    partial class FixDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,35 +21,12 @@ namespace RealEstateApp.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.4")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("RealEstateApp.Models.Buyer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("RoyaltyPercentage")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Rut")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("UnaccreditedRoyaltyPercentage")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Rut")
-                        .IsUnique();
-
-                    b.ToTable("Buyers");
-                });
 
             modelBuilder.Entity("RealEstateApp.Models.Inscription", b =>
                 {
@@ -62,16 +39,13 @@ namespace RealEstateApp.Migrations
                     b.Property<int>("Block")
                         .HasColumnType("int");
 
-                    b.Property<string>("Buyer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Cne")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Commune")
-                        .HasColumnType("int");
+                    b.Property<string>("Commune")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Fojas")
                         .IsRequired()
@@ -84,10 +58,6 @@ namespace RealEstateApp.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Property")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Seller")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -111,7 +81,7 @@ namespace RealEstateApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FinalEffectiveYear")
+                    b.Property<int?>("FinalEffectiveYear")
                         .HasColumnType("int");
 
                     b.Property<int>("Fojas")
@@ -136,38 +106,12 @@ namespace RealEstateApp.Migrations
                     b.Property<int>("Property")
                         .HasColumnType("int");
 
-                    b.Property<int>("RoyaltyPer")
+                    b.Property<int>("RoyaltyPercentage")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("MultiOwners");
-                });
-
-            modelBuilder.Entity("RealEstateApp.Models.Seller", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("RoyaltyPercentage")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Rut")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("UnaccreditedRoyaltyPercentage")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Rut")
-                        .IsUnique();
-
-                    b.ToTable("Sellers");
                 });
 #pragma warning restore 612, 618
         }

@@ -33,19 +33,7 @@
             <label asp-for="NewInscription.Property"></label>
             <input asp-for="NewInscription.Property" class="form-control" />
             <span asp-validation-for="NewInscription.Property" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.NewInscription.Sellers, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(x => x.SelectedSellerId, Model.AvailableSellers, "-- Select --", new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.NewInscription.Buyers, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(x => x.SelectedBuyerId, Model.AvailableBuyers, "-- Select --", new { @class = "form-control" })
-            </div>
-        </div>
+        </div>       
         <div class="mb-3">
             <label asp-for="NewInscription.Fojas"></label>
             <input asp-for="NewInscription.Fojas" class="form-control" />
