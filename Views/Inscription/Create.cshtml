@@ -53,6 +53,11 @@
             <input asp-for="InscriptionNumber" class="form-control" />
             <span asp-validation-for="InscriptionNumber" class="text-danger"></span>
         </div>
+
+        <div class="form-group">
+            <label asp-for="InscriptionDate" class="control-label"></label>
+            <input asp-for="InscriptionDate" class="form-control" type="date" />
+        </div>
         <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
         <div>
             <a asp-action="Index">Back to List</a>
@@ -69,17 +74,25 @@
         rutInput.className = "form-control";
         rutInput.required = true;
 
-        var nameInput = document.createElement("input");
-        nameInput.type = "text";
-        nameInput.name = entityType + "Names";
-        nameInput.className = "form-control";
-        nameInput.required = true;
-
         var royaltyInput = document.createElement("input");
         royaltyInput.type = "number";
         royaltyInput.name = entityType + "Royalties";
         royaltyInput.className = "form-control";
         royaltyInput.required = true;
+
+        var unaccreditedSelect = document.createElement("select");
+        unaccreditedSelect.name = entityType + "UnaccreditedPer";
+        unaccreditedSelect.className = "form-control";;
+
+        var option1 = document.createElement("option");
+        option1.value = "true";
+        option1.text = "Si";
+        unaccreditedSelect.appendChild(option1);
+
+        var option2 = document.createElement("option");
+        option2.value = "false";
+        option2.text = "No";
+        unaccreditedSelect.appendChild(option2);
 
         var removeButton = document.createElement("button");
         removeButton.type = "button";
@@ -99,10 +112,10 @@
         formGroup.className = "form-group";
         formGroup.appendChild(document.createElement("label")).textContent = entityType + " Rut:";
         formGroup.appendChild(rutInput);
-        formGroup.appendChild(document.createElement("label")).textContent = entityType + " Name:";
-        formGroup.appendChild(nameInput);
         formGroup.appendChild(document.createElement("label")).textContent = "Royalty Percentage:";
         formGroup.appendChild(royaltyInput);
+        formGroup.appendChild(document.createElement("label")).textContent = "Unaccredited %:";
+        formGroup.appendChild(unaccreditedSelect);
         formGroup.appendChild(removeButton);
 
         var cardBody = document.createElement("div");

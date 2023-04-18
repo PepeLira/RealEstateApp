@@ -1,10 +1,8 @@
 ﻿using RealEstateApp.Data;
 using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Models;
-using RealEstateApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using RealEstateApp.ViewModels.Insciption;
 using System;
 
 namespace RealEstateApp.Controllers
@@ -47,44 +45,68 @@ namespace RealEstateApp.Controllers
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Inscription inscription, string[] sellerRuts, string[] sellerNames, int[] sellerRoyalties, string[] buyerRuts, string[] buyerNames, int[] buyerRoyalties)
+        public IActionResult Create(Inscription inscription,
+                            string[] sellerRuts,
+                            int[] sellerRoyalties,
+                            bool[] sellerUnaccreditedPer,
+                            string[] buyerRuts,
+                            int[] buyerRoyalties,
+                            bool[] buyerUnaccreditedPer)
         {
-            if (inscription != null)
+            if (inscription == null | buyerRuts.Length == 0)
             {
-                inscription.Sellers = new List<Seller>();
-                inscription.Buyers = new List<Buyer>();
-                for (int i = 0; i < sellerNames.Length; i++)
-                {
-
-                    var seller = new Seller
-                    {
-                        Rut = sellerRuts[i],
-                        Name = sellerNames[i],
-                        RoyaltyPercentage = sellerRoyalties[i]
-                    };
-                    
-                    seller.Inscription = inscription;
-                    _context.Add(seller);
-                }
-
-                for (int i = 0; i < buyerNames.Length; i++)
-                {
-
-                    var buyer = new Buyer
-                    {
-                        Rut = buyerRuts[i],
-                        Name = buyerNames[i],
-                        RoyaltyPercentage = buyerRoyalties[i]
-                    };
-
-                    buyer.Inscription = inscription;
-                    _context.Add(buyer);
-                }
-                _context.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Create");
             }
 
-            return View(inscription);
+            if (sellerRuts != null) {
+                PopulateSellers(inscription, sellerRuts, sellerRoyalties, sellerUnaccreditedPer);
+            }
+
+            PopulateBuyers(inscription, buyerRuts, buyerRoyalties, buyerUnaccreditedPer);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
+
+        private void PopulateSellers(Inscription inscription, 
+                                     string[] sellerRuts, 
+                                     int[] sellerRoyalties, 
+                                     bool[] sellerUnaccreditedPer)
+        {
+            inscription.Sellers = new List<Seller>();
+            for (int i = 0; i < sellerRuts.Length; i++)
+            {
+                var seller = new Seller
+                {
+                    Rut = sellerRuts[i],
+                    RoyaltyPercentage = sellerRoyalties[i],
+                    UnaccreditedRoyaltyPercentage = sellerUnaccreditedPer[i]
+                };
+
+                seller.Inscription = inscription;
+                _context.Add(seller);
+            }
+        }
+
+        private void PopulateBuyers(Inscription inscription, 
+                                    string[] buyerRuts, 
+                                    int[] buyerRoyalties, 
+                                    bool[] buyerUnaccreditedPer)
+        {
+            inscription.Buyers = new List<Buyer>();
+            for (int i = 0; i < buyerRuts.Length; i++)
+            {
+                var buyer = new Buyer
+                {
+                    Rut = buyerRuts[i],
+                    RoyaltyPercentage = buyerRoyalties[i],
+                    UnaccreditedRoyaltyPercentage = buyerUnaccreditedPer[i]
+                };
+
+                buyer.Inscription = inscription;
+                _context.Add(buyer);
+            }
+        }
+
     }
 }

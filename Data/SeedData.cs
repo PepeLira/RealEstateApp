@@ -23,17 +23,15 @@ namespace RealEstateApp.Data
             var buyer_1 = new Buyer
             {
                 Rut = "19.434.234-0",
-                Name = "Rafa",
                 RoyaltyPercentage = random.Next(1, 100),
-                UnaccreditedRoyaltyPercentage = random.Next(1, 100)
+                UnaccreditedRoyaltyPercentage = false
             };
 
             var buyer_2 = new Buyer
             {
                 Rut = "19.434.300-0",
-                Name = "Pepe",
                 RoyaltyPercentage = random.Next(1, 100),
-                UnaccreditedRoyaltyPercentage = random.Next(1, 100)
+                UnaccreditedRoyaltyPercentage = false
             };
 
             context.Buyers.AddRange(buyer_1,buyer_2);
@@ -41,17 +39,15 @@ namespace RealEstateApp.Data
             var seller_1 = new Seller
             {
                 Rut = "19.434.300-0",
-                Name = "Pepe",
                 RoyaltyPercentage = random.Next(1, 100),
-                UnaccreditedRoyaltyPercentage = random.Next(1, 100)
+                UnaccreditedRoyaltyPercentage = false
             };
 
             var seller_2 = new Seller
             {
                 Rut = "19.434.234-0",
-                Name = "Rafa",
                 RoyaltyPercentage = random.Next(1, 100),
-                UnaccreditedRoyaltyPercentage = random.Next(1, 100)
+                UnaccreditedRoyaltyPercentage = false
             };
 
             context.Sellers.AddRange(seller_1,seller_2);

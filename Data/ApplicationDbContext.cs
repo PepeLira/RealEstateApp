@@ -22,12 +22,6 @@ namespace RealEstateApp.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Seller>().ToTable(nameof(Seller))
-                .HasIndex(seller => seller.Rut)
-                .IsUnique();
-            modelBuilder.Entity<Buyer>().ToTable(nameof(Buyer))
-                .HasIndex(buyer => buyer.Rut)
-                .IsUnique();
             modelBuilder.Entity<Inscription>().ToTable(nameof(Inscription))
                 .HasMany(inscription => inscription.Sellers)
                 .WithOne(sellers => sellers.Inscription);

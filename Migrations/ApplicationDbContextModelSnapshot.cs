@@ -36,28 +36,21 @@ namespace RealEstateApp.Migrations
                     b.Property<int>("InscriptionAttentionID")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("RoyaltyPercentage")
                         .HasColumnType("int");
 
                     b.Property<string>("Rut")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UnaccreditedRoyaltyPercentage")
-                        .HasColumnType("int");
+                    b.Property<bool>("UnaccreditedRoyaltyPercentage")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
                     b.HasIndex("InscriptionAttentionID");
 
-                    b.HasIndex("Rut")
-                        .IsUnique();
-
-                    b.ToTable("Buyer", (string)null);
+                    b.ToTable("Buyers");
                 });
 
             modelBuilder.Entity("RealEstateApp.Models.Commune", b =>
@@ -174,28 +167,21 @@ namespace RealEstateApp.Migrations
                     b.Property<int>("InscriptionAttentionID")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("RoyaltyPercentage")
                         .HasColumnType("int");
 
                     b.Property<string>("Rut")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UnaccreditedRoyaltyPercentage")
-                        .HasColumnType("int");
+                    b.Property<bool>("UnaccreditedRoyaltyPercentage")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
                     b.HasIndex("InscriptionAttentionID");
 
-                    b.HasIndex("Rut")
-                        .IsUnique();
-
-                    b.ToTable("Seller", (string)null);
+                    b.ToTable("Sellers");
                 });
 
             modelBuilder.Entity("RealEstateApp.Models.Buyer", b =>
