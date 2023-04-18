@@ -1,4 +1,4 @@
-﻿@model RealEstateApp.ViewModels.Insciption.CreateViewModel
+﻿@model RealEstateApp.Models.Inscription;
 
 @{
     ViewData["Title"] = "Create";
@@ -11,50 +11,53 @@
             <hr />   
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.NewInscription.Cne, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Cne, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.NewInscription.Cne, (SelectList)ViewBag.CneOptions, "-- Select --", htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.NewInscription.Cne, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.Cne, (SelectList)ViewBag.CneOptions, "-- Select --", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Cne, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.NewInscription.Commune, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Commune, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.NewInscription.Commune, (SelectList)ViewBag.CommuneOptions, "-- Select --", htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.NewInscription.Commune, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.Commune, (SelectList)ViewBag.CommuneOptions, "-- Select --", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Commune, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="mb-3">
-            <label asp-for="NewInscription.Block"></label>
-            <input asp-for="NewInscription.Block" class="form-control" />
-            <span asp-validation-for="NewInscription.Block" class="text-danger"></span>
+            <label asp-for="Block"></label>
+            <input asp-for="Block" class="form-control" />
+            <span asp-validation-for="Block" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="NewInscription.Property"></label>
-            <input asp-for="NewInscription.Property" class="form-control" />
-            <span asp-validation-for="NewInscription.Property" class="text-danger"></span>
+            <label asp-for="Property"></label>
+            <input asp-for="Property" class="form-control" />
+            <span asp-validation-for="Property" class="text-danger"></span>
         </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.NewInscription.Sellers, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(x => x.SelectedSellerId, Model.AvailableSellers, "-- Select --", new { @class = "form-control" })
-            </div>
+        <div id="seller-cards-container" class="card-deck mb-3">
+            <!-- The Sellers will be displayed here -->
         </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.NewInscription.Buyers, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(x => x.SelectedBuyerId, Model.AvailableBuyers, "-- Select --", new { @class = "form-control" })
-            </div>
+
+        <div class="mb-3">
+            <button id="add-seller" type="button" class="btn btn-secondary" style="width:100px">Add Seller</button>
+        </div>
+
+        <div id="buyer-cards-container" class="card-deck mb-3">
+            <!-- The Buyers will be displayed here -->
         </div>
         <div class="mb-3">
-            <label asp-for="NewInscription.Fojas"></label>
-            <input asp-for="NewInscription.Fojas" class="form-control" />
-            <span asp-validation-for="NewInscription.Fojas" class="text-danger"></span>
+            <button id="add-buyer" type="button" class="btn btn-secondary" style="width:100px">Add Buyer</button>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Fojas"></label>
+            <input asp-for="Fojas" class="form-control" />
+            <span asp-validation-for="Fojas" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="NewInscription.InscriptionNumber"></label>
-            <input asp-for="NewInscription.InscriptionNumber" class="form-control" />
-            <span asp-validation-for="NewInscription.InscriptionNumber" class="text-danger"></span>
+            <label asp-for="InscriptionNumber"></label>
+            <input asp-for="InscriptionNumber" class="form-control" />
+            <span asp-validation-for="InscriptionNumber" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
         
@@ -65,6 +68,77 @@
     </div>
 </form>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+<script>
+    function createInputFields(entityType) {
+        var rutInput = document.createElement("input");
+        rutInput.type = "text";
+        rutInput.name = entityType + "Ruts";
+        rutInput.rut = entityType + "Rut";
+        rutInput.className = "form-control";
+        rutInput.required = true;
+
+        var nameInput = document.createElement("input");
+        nameInput.type = "text";
+        nameInput.name = entityType + "Names";
+        nameInput.className = "form-control";
+        nameInput.required = true;
+
+        var royaltyInput = document.createElement("input");
+        royaltyInput.type = "number";
+        royaltyInput.name = entityType + "Royalties";
+        royaltyInput.className = "form-control";
+        royaltyInput.required = true;
+
+        var removeButton = document.createElement("button");
+        removeButton.type = "button";
+        removeButton.textContent = "Remove";
+        removeButton.className = "btn btn-secondary";
+        removeButton.style = "margin: 1rem"
+        removeButton.addEventListener("click", function () {
+            var card = this.closest(".card");
+            card.parentNode.removeChild(card);
+        });
+
+        var cardTitle = document.createElement("h5");
+        cardTitle.className = "card-title";
+        cardTitle.textContent = "New " + entityType;
+
+        var formGroup = document.createElement("div");
+        formGroup.className = "form-group";
+        formGroup.appendChild(document.createElement("label")).textContent = entityType + " Rut:";
+        formGroup.appendChild(rutInput);
+        formGroup.appendChild(document.createElement("label")).textContent = entityType + " Name:";
+        formGroup.appendChild(nameInput);
+        formGroup.appendChild(document.createElement("label")).textContent = "Royalty Percentage:";
+        formGroup.appendChild(royaltyInput);
+        formGroup.appendChild(removeButton);
+
+        var cardBody = document.createElement("div");
+        cardBody.className = "card-body";
+        cardBody.appendChild(cardTitle);
+        cardBody.appendChild(formGroup);
+
+        var card = document.createElement("div");
+        card.className = "card";
+        card.appendChild(cardBody);
+
+        return card;
+    }
+
+    var sellerCardsContainer = document.getElementById("seller-cards-container");
+    var addSellerButton = document.getElementById("add-seller");
+
+    var buyerCardsContainer = document.getElementById("buyer-cards-container");
+    var addBuyerButton = document.getElementById("add-buyer");
+
+    addSellerButton.addEventListener("click", function () {
+        var sellerCard = createInputFields("seller");
+        sellerCardsContainer.appendChild(sellerCard);
+    });
+
+    addBuyerButton.addEventListener("click", function () {
+        var buyerCard = createInputFields("buyer");
+        buyerCardsContainer.appendChild(buyerCard);
+    });
+</script>
+

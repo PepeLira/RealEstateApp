@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RealEstateApp.Data;
 
@@ -11,9 +12,11 @@ using RealEstateApp.Data;
 namespace RealEstateApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230413214501_UpdateIscriptionIDName")]
+    partial class UpdateIscriptionIDName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,6 +28,36 @@ namespace RealEstateApp.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("BuyerInscription", b =>
+                {
+                    b.Property<int>("BuyersId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InscriptionsAttentionID")
+                        .HasColumnType("int");
+
+                    b.HasKey("BuyersId", "InscriptionsAttentionID");
+
+                    b.HasIndex("InscriptionsAttentionID");
+
+                    b.ToTable("BuyerInscription");
+                });
+
+            modelBuilder.Entity("InscriptionSeller", b =>
+                {
+                    b.Property<int>("InscriptionsAttentionID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SellersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("InscriptionsAttentionID", "SellersId");
+
+                    b.HasIndex("SellersId");
+
+                    b.ToTable("InscriptionSeller");
+                });
+
             modelBuilder.Entity("RealEstateApp.Models.Buyer", b =>
                 {
                     b.Property<int>("Id")
@@ -32,9 +65,6 @@ namespace RealEstateApp.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("InscriptionAttentionID")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -51,8 +81,6 @@ namespace RealEstateApp.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("InscriptionAttentionID");
 
                     b.HasIndex("Rut")
                         .IsUnique();
@@ -154,9 +182,6 @@ namespace RealEstateApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("InscriptionAttentionID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -173,41 +198,40 @@ namespace RealEstateApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InscriptionAttentionID");
-
                     b.HasIndex("Rut")
                         .IsUnique();
 
                     b.ToTable("Seller", (string)null);
                 });
 
-            modelBuilder.Entity("RealEstateApp.Models.Buyer", b =>
+            modelBuilder.Entity("BuyerInscription", b =>
                 {
-                    b.HasOne("RealEstateApp.Models.Inscription", "Inscription")
-                        .WithMany("Buyers")
-                        .HasForeignKey("InscriptionAttentionID")
+                    b.HasOne("RealEstateApp.Models.Buyer", null)
+                        .WithMany()
+                        .HasForeignKey("BuyersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Inscription");
+                    b.HasOne("RealEstateApp.Models.Inscription", null)
+                        .WithMany()
+                        .HasForeignKey("InscriptionsAttentionID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("RealEstateApp.Models.Seller", b =>
+            modelBuilder.Entity("InscriptionSeller", b =>
                 {
-                    b.HasOne("RealEstateApp.Models.Inscription", "Inscription")
-                        .WithMany("Sellers")
-                        .HasForeignKey("InscriptionAttentionID")
+                    b.HasOne("RealEstateApp.Models.Inscription", null)
+                        .WithMany()
+                        .HasForeignKey("InscriptionsAttentionID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Inscription");
-                });
-
-            modelBuilder.Entity("RealEstateApp.Models.Inscription", b =>
-                {
-                    b.Navigation("Buyers");
-
-                    b.Navigation("Sellers");
+                    b.HasOne("RealEstateApp.Models.Seller", null)
+                        .WithMany()
+                        .HasForeignKey("SellersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

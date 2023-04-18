@@ -29,10 +29,10 @@ namespace RealEstateApp.Data
                 .IsUnique();
             modelBuilder.Entity<Inscription>().ToTable(nameof(Inscription))
                 .HasMany(inscription => inscription.Sellers)
-                .WithMany(sellers => sellers.Inscriptions);
+                .WithOne(sellers => sellers.Inscription);
             modelBuilder.Entity<Inscription>().ToTable(nameof(Inscription))
                 .HasMany(inscriptions => inscriptions.Buyers)
-                .WithMany(buyers => buyers.Inscriptions);
+                .WithOne(buyers => buyers.Inscription);
         }
     }
 }

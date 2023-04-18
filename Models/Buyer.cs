@@ -14,6 +14,6 @@ namespace RealEstateApp.Models
         public int RoyaltyPercentage { get; set; } // % de derecho
         [Required]
         public int UnaccreditedRoyaltyPercentage { get; set; } // % de derecho no acreditado
-        public virtual ICollection<Inscription> Inscriptions { get; set; }
+        public virtual Inscription Inscription { get; set; }
     }
 }

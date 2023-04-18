@@ -29,7 +29,7 @@ namespace RealEstateApp.Migrations
                 name: "IX_Sellers_Rut",
                 table: "Sellers",
                 column: "Rut",
-                unique: true);
+                unique: false);
         }
 
         /// <inheritdoc />

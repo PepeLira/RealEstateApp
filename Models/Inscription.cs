@@ -7,7 +7,7 @@ namespace RealEstateApp.Models
     public class Inscription
     {
         [Key]
-        public int Id { get; set; }
+        public int AttentionID { get; set; }
         public String Cne { get; set; }
         public String Commune { get; set; }
         public int Block { get; set; }
@@ -37,12 +37,13 @@ namespace RealEstateApp.Models
 
 /// Model Description
 /// 
-/// Cne      ==> Codigo de Naturaleza de la Escritura (Compraventa / Regularización de Patrimonio)
-/// Commune  ==> Comuna
-/// Block    ==> Manzana
-/// Property ==> Predio
-/// Sellers  ==> Enajenantes
-/// Buyers   ==> Adquirentes
+/// AttentionID     ==> N de Atencion
+/// Cne             ==> Codigo de Naturaleza de la Escritura (Compraventa / Regularización de Patrimonio)
+/// Commune         ==> Comuna
+/// Block           ==> Manzana
+/// Property        ==> Predio
+/// Sellers         ==> Enajenantes
+/// Buyers          ==> Adquirentes
 /// Fojas
 /// InscriptionNumber
 /// InscriptionDate

@@ -5,21 +5,22 @@ using RealEstateApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RealEstateApp.ViewModels.Insciption;
+using System;
 
 namespace RealEstateApp.Controllers
 {
     public class InscriptionController : Controller
     {
-        private readonly ApplicationDbContext applicationDbContext;
+        private readonly ApplicationDbContext _context;
 
         public InscriptionController(ApplicationDbContext dbContext)
         {
-            applicationDbContext = dbContext;
+            _context = dbContext;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Inscription> objInscriptionList = applicationDbContext.Inscriptions.ToList();
+            IEnumerable<Inscription> objInscriptionList = _context.Inscriptions.ToList();
             return View(objInscriptionList);
         }
 
@@ -30,54 +31,62 @@ namespace RealEstateApp.Controllers
             var cneOptions = Enum.GetNames(typeof(CneOptions));
             var cneSelectList = new SelectList(cneOptions);
 
-            var buyersOptions = applicationDbContext.Buyers.Select(item => new SelectListItem
-            {
-                Value = item.Id.ToString(),
-                Text = item.Rut
-            }).ToList();
-
-            var sellersOptions = applicationDbContext.Sellers.Select(item => new SelectListItem
-            {
-                Value = item.Id.ToString(),
-                Text = item.Rut
-            }).ToList();
-
-            var viewModel = new CreateViewModel
-            {
-                NewInscription = new Inscription(),
-                AvailableBuyers = buyersOptions,
-                AvailableSellers = sellersOptions
-            };
+            var inscription = new Inscription();
 
             ViewBag.CommuneOptions = comuneSelectList;
             ViewBag.CneOptions = cneSelectList;
-            return View(viewModel);
+            return View(inscription);
         }
+
 
         public ViewResult Details(int id)
         {
-            Inscription inscription = applicationDbContext.Inscriptions.Find(id);
+            var inscription = _context.Inscriptions.Include(i => i.Sellers)
+                                           .Include(i => i.Buyers)
+                                           .FirstOrDefault(i => i.AttentionID == id);
+
             return View(inscription);
         }
 
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CreateViewModel viewModel)
+        public IActionResult Create(Inscription inscription, string[] sellerRuts, string[] sellerNames, int[] sellerRoyalties, string[] buyerRuts, string[] buyerNames, int[] buyerRoyalties)
         {
-            var inscription = viewModel.NewInscription;
-            Buyer? selected_buyer = applicationDbContext.Buyers.Find(viewModel.SelectedBuyerId);
-            Seller? selected_seller = applicationDbContext.Sellers.Find(viewModel.SelectedSellerId);
-
-            if (inscription != null && selected_buyer != null && selected_seller != null)
+            if (inscription != null)
             {
-                selected_buyer.Inscriptions.Add(inscription);
-                selected_seller.Inscriptions.Add(inscription);
-                applicationDbContext.SaveChanges();
+                inscription.Sellers = new List<Seller>();
+                inscription.Buyers = new List<Buyer>();
+                for (int i = 0; i < sellerNames.Length; i++)
+                {
+                    var seller = new Seller
+                    {
+                        Rut = sellerRuts[i],
+                        Name = sellerNames[i],
+                        RoyaltyPercentage = sellerRoyalties[i]
+                    };
+                    
+                    seller.Inscription = inscription;
+                    _context.Add(seller);
+                }
+
+                for (int i = 0; i < buyerNames.Length; i++)
+                {
+                    var buyer = new Buyer
+                    {
+                        Rut = buyerRuts[i],
+                        Name = buyerNames[i],
+                        RoyaltyPercentage = buyerRoyalties[i]
+                    };
+
+                    buyer.Inscription = inscription;
+                    _context.Add(buyer);
+                }
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return RedirectToAction("Create");
+            return View(inscription);
         }
     }
 }

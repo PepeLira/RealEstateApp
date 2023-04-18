@@ -25,12 +25,6 @@
                 @Html.DisplayNameFor(model => model.Property)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Sellers)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Buyers)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Fojas)
             </th>
             <th>
@@ -58,12 +52,6 @@
                 @Html.DisplayFor(modelItem => item.Property)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Sellers.First().Rut)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.Buyers.First().Rut)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Fojas)
             </td>
             <td>
@@ -73,7 +61,7 @@
                 @Html.DisplayFor(modelItem => item.InscriptionDate)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                 <a asp-action="Details" asp-route-id="@item.AttentionID">Details</a>
             </td>
         </tr>
 }
