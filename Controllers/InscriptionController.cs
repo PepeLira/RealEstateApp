@@ -26,25 +26,21 @@ namespace RealEstateApp.Controllers
 
         public IActionResult Create()
         {
-            var communeOptions = Enum.GetNames(typeof(CommuneOptions));
-            var comuneSelectList = new SelectList(communeOptions);
+            var communes = _context.Communes.Select(c => c.Name).ToList();
+            var communeSelectList = new SelectList(communes);
             var cneOptions = Enum.GetNames(typeof(CneOptions));
             var cneSelectList = new SelectList(cneOptions);
-
-            var inscription = new Inscription();
-
-            ViewBag.CommuneOptions = comuneSelectList;
+            var inscription = new Inscription();;
+            ViewBag.CommuneSelectList = communeSelectList;
             ViewBag.CneOptions = cneSelectList;
             return View(inscription);
         }
-
 
         public ViewResult Details(int id)
         {
             var inscription = _context.Inscriptions.Include(i => i.Sellers)
                                            .Include(i => i.Buyers)
                                            .FirstOrDefault(i => i.AttentionID == id);
-
             return View(inscription);
         }
 
@@ -59,6 +55,7 @@ namespace RealEstateApp.Controllers
                 inscription.Buyers = new List<Buyer>();
                 for (int i = 0; i < sellerNames.Length; i++)
                 {
+
                     var seller = new Seller
                     {
                         Rut = sellerRuts[i],
@@ -72,6 +69,7 @@ namespace RealEstateApp.Controllers
 
                 for (int i = 0; i < buyerNames.Length; i++)
                 {
+
                     var buyer = new Buyer
                     {
                         Rut = buyerRuts[i],

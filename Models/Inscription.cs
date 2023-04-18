@@ -19,14 +19,6 @@ namespace RealEstateApp.Models
         public DateTime InscriptionDate { get; set; } = DateTime.Now;
     }
 
-    public enum CommuneOptions
-    {
-        LasCondes,
-        Ñuñoa,
-        Vitacura,
-        Providencia,
-        LaReina
-    }
     public enum CneOptions
     {
         Compraventa,

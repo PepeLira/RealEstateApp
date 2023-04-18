@@ -15,7 +15,6 @@ namespace RealEstateApp.Data
         {
             Random random = new Random();
 
-            // Look for any students.
             if (context.Inscriptions.Any())
             {
                 return;   // DB has been seeded
@@ -56,6 +55,17 @@ namespace RealEstateApp.Data
             };
 
             context.Sellers.AddRange(seller_1,seller_2);
+
+            var communes = new Commune[]
+            {
+                new Commune{Name="Las Condes"},
+                new Commune{Name="Ñuñoa"},
+                new Commune{Name="Vitacura"},
+                new Commune{Name="Providencia"},
+                new Commune{Name="La Reina"}
+            };
+
+            context.Communes.AddRange(communes);
 
             context.Inscriptions.AddRange(
                 new Inscription {
@@ -127,8 +137,8 @@ namespace RealEstateApp.Data
                     InscriptionNumber = random.Next(1, 100),
                     InitialEffectiveYear = random.Next(2020, 2050),
                 }
-            );
-                
+            );         
+
             context.SaveChanges();
         }
     }

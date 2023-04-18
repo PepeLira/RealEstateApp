@@ -18,6 +18,7 @@ namespace RealEstateApp.Data
         public DbSet<MultiOwner> MultiOwners { get; set; }
         public DbSet<Seller> Sellers { get; set; }
         public DbSet<Buyer> Buyers { get; set; }
+        public DbSet<Commune> Communes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

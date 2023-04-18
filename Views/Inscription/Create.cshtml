@@ -18,11 +18,8 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.Commune, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.Commune, (SelectList)ViewBag.CommuneOptions, "-- Select --", htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Commune, "", new { @class = "text-danger" })
-            </div>
+            <label asp-for="Commune" class="control-label"></label>
+            <select asp-for="Commune" class="form-control" asp-items="@ViewBag.CommuneSelectList"></select>
         </div>
         <div class="mb-3">
             <label asp-for="Block"></label>
@@ -37,18 +34,15 @@
         <div id="seller-cards-container" class="card-deck mb-3">
             <!-- The Sellers will be displayed here -->
         </div>
-
         <div class="mb-3">
             <button id="add-seller" type="button" class="btn btn-secondary" style="width:100px">Add Seller</button>
         </div>
-
         <div id="buyer-cards-container" class="card-deck mb-3">
             <!-- The Buyers will be displayed here -->
         </div>
         <div class="mb-3">
             <button id="add-buyer" type="button" class="btn btn-secondary" style="width:100px">Add Buyer</button>
         </div>
-
         <div class="mb-3">
             <label asp-for="Fojas"></label>
             <input asp-for="Fojas" class="form-control" />
@@ -60,11 +54,9 @@
             <span asp-validation-for="InscriptionNumber" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
-        
         <div>
             <a asp-action="Index">Back to List</a>
         </div>
-        
     </div>
 </form>
 
