@@ -53,17 +53,24 @@ namespace RealEstateApp.Controllers
                             int[] buyerRoyalties,
                             bool[] buyerUnaccreditedPer)
         {
-            if (inscription == null | buyerRuts.Length == 0)
+            var buyersCount = buyerRuts.Length;
+            var sellersCount = sellerRuts.Length;
+
+            if (inscription.Cne == "RegularizaciónDePatrimonio")
             {
-                return RedirectToAction("Create");
-            }
+                if (inscription == null | buyersCount == 0)
+                {
+                    return RedirectToAction("Create");
+                }
 
-            if (sellerRuts != null) {
-                PopulateSellers(inscription, sellerRuts, sellerRoyalties, sellerUnaccreditedPer);
-            }
+                if (sellersCount > 0)
+                {
+                    return RedirectToAction("Create");
+                }
 
-            PopulateBuyers(inscription, buyerRuts, buyerRoyalties, buyerUnaccreditedPer);
-            _context.SaveChanges();
+                PopulateBuyers(inscription, buyerRuts, buyerRoyalties, buyerUnaccreditedPer);
+                _context.SaveChanges();
+            }
 
             return RedirectToAction("Index");
         }
