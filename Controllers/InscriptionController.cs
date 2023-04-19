@@ -3,28 +3,28 @@ using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
+using RealEstateApp.Helpers;
 
 namespace RealEstateApp.Controllers
 {
     public class InscriptionController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
         public InscriptionController(ApplicationDbContext dbContext)
         {
-            _context = dbContext;
+            _dbContext = dbContext;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Inscription> objInscriptionList = _context.Inscriptions.ToList();
+            IEnumerable<Inscription> objInscriptionList = _dbContext.Inscriptions.ToList();
             return View(objInscriptionList);
         }
 
         public IActionResult Create()
         {
-            var communes = _context.Communes.Select(c => c.Name).ToList();
+            var communes = _dbContext.Communes.Select(c => c.Name).ToList();
             var communeSelectList = new SelectList(communes);
             var cneOptions = Enum.GetNames(typeof(CneOptions));
             var cneSelectList = new SelectList(cneOptions);
@@ -36,7 +36,7 @@ namespace RealEstateApp.Controllers
 
         public ViewResult Details(int id)
         {
-            var inscription = _context.Inscriptions.Include(i => i.Sellers)
+            var inscription = _dbContext.Inscriptions.Include(i => i.Sellers)
                                            .Include(i => i.Buyers)
                                            .FirstOrDefault(i => i.AttentionID == id);
             return View(inscription);
@@ -52,7 +52,7 @@ namespace RealEstateApp.Controllers
                             string[] buyerRuts,
                             int[] buyerRoyalties,
                             bool[] buyerUnaccreditedPer)
-        {
+        { 
             var buyersCount = buyerRuts.Length;
             var sellersCount = sellerRuts.Length;
 
@@ -69,13 +69,14 @@ namespace RealEstateApp.Controllers
                 }
 
                 (sellerRoyalties, buyerRoyalties) = NullifyUnaccreditedPercentage
-                                                            (sellerRoyalties,
-                                                            sellerUnaccreditedPer,
-                                                            buyerRoyalties,
-                                                            buyerUnaccreditedPer);
+                (sellerRoyalties,
+                sellerUnaccreditedPer,
+                buyerRoyalties,
+                buyerUnaccreditedPer);
 
                 PopulateBuyers(inscription, buyerRuts, buyerRoyalties, buyerUnaccreditedPer);
-                _context.SaveChanges();
+                _dbContext.SaveChanges();
+                MultiOwnerHelper multiOwnerHelper = new MultiOwnerHelper(_dbContext);
             }
             else
             {
@@ -134,7 +135,7 @@ namespace RealEstateApp.Controllers
                 };
 
                 seller.Inscription = inscription;
-                _context.Add(seller);
+                _dbContext.Add(seller);
             }
         }
 
@@ -154,7 +155,7 @@ namespace RealEstateApp.Controllers
                 };
 
                 buyer.Inscription = inscription;
-                _context.Add(buyer);
+                _dbContext.Add(buyer);
             }
         }
 

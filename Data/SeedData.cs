@@ -4,8 +4,6 @@ namespace RealEstateApp.Data
 {
     public static class SeedData
     {
-        public static void Initialize(ApplicationDbContext context){ }
-
         public static DateTime getRandomDate()
         {
             return DateTime.Now.AddDays(new Random().Next(100, 500));
@@ -68,10 +66,10 @@ namespace RealEstateApp.Data
                     Cne = "Compraventa",
                     Commune = "Las Condes",
                     Block = random.Next(1, 100),
-                    Property = "SomeProperty",
+                    Property = 22,
                     Sellers = new List<Seller> { seller_1 },
                     Buyers = new List<Buyer> { buyer_1 },
-                    Fojas = "Foja 1",
+                    Fojas = 1,
                     InscriptionNumber = random.Next(1, 100),
                     InscriptionDate = getRandomDate()
                 },
@@ -80,10 +78,10 @@ namespace RealEstateApp.Data
                     Cne = "Compraventa",
                     Commune = "Nunoa",
                     Block = random.Next(1, 100),
-                    Property = "SomeProperty",
+                    Property = 11,
                     Sellers = new List<Seller> { seller_2 },
                     Buyers = new List<Buyer> { buyer_2 },
-                    Fojas = "Foja 2",
+                    Fojas = 2,
                     InscriptionNumber = 2,
                     InscriptionDate = getRandomDate()
                 }

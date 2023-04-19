@@ -11,10 +11,10 @@ namespace RealEstateApp.Models
         public String Cne { get; set; }
         public String Commune { get; set; }
         public int Block { get; set; }
-        public String Property { get; set; }
+        public int Property { get; set; }
         public virtual ICollection<Seller>? Sellers { get; set; }
         public virtual ICollection<Buyer>  Buyers { get; set; }
-        public String Fojas { get; set; }
+        public int Fojas { get; set; }
         public int InscriptionNumber { get; set; }
         public DateTime InscriptionDate { get; set; } = DateTime.Now;
     }
