@@ -1,30 +1,30 @@
 ﻿@model IEnumerable<RealEstateApp.Models.MultiOwner>
 
-<h2>MultiOwner Index</h2>
+<h2>Multipropietarios</h2>
 
 @using (Html.BeginForm("Index", "MultiOwner", FormMethod.Get))
 {
     <div class="form-group">
-        <label for="year">Year:</label>
+        <label for="year">Año:</label>
         @Html.TextBox("year", ViewBag.Year as int?, new { @class = "form-control" })
     </div>
 
     <div class="form-group">
-        <label for="commune">Commune:</label>
+        <label for="commune">Comuna:</label>
         @Html.TextBox("commune", ViewBag.Commune as string, new { @class = "form-control" })
     </div>
 
     <div class="form-group">
-        <label for="block">Block:</label>
+        <label for="block">Manzana:</label>
         @Html.TextBox("block", ViewBag.Block as int?, new { @class = "form-control" })
     </div>
 
     <div class="form-group">
-        <label for="property">Property:</label>
+        <label for="property">Predio:</label>
         @Html.TextBox("property", ViewBag.Property as int?, new { @class = "form-control" })
     </div>
     <br />
-    <button type="submit" class="btn btn-primary">Search</button>
+    <button type="submit" class="btn btn-primary">Buscar</button>
     <br />
 }
 
@@ -32,17 +32,17 @@
     <thead>
         <tr>
             <th>Id</th>
-            <th>Commune</th>
-            <th>Block</th>
-            <th>Property</th>
-            <th>Owner</th>
-            <th>RoyaltyPercentage</th>
-            <th>Fojas</th>
-            <th>InscriptionDate</th>
-            <th>InscriptionYear</th>
-            <th>InscriptionNumber</th>
-            <th>InitialEffectiveYear</th>
-            <th>FinalEffectiveYear</th>
+            <th>Comuna</th>
+            <th>Manzana</th>
+            <th>Predio</th>
+            <th>Propietario</th>
+            <th>Porcentaje de derechos</th>
+            <th>Foja</th>
+            <th>Fecha de Inscripción</th>
+            <th>Año de Inscripción</th>
+            <th>Número de Inscripción</th>
+            <th>Año de vigencia inicial</th>
+            <th>Año de vigencia final</th>
         </tr>
     </thead>
     <tbody>
