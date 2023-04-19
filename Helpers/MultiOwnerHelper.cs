@@ -1,4 +1,5 @@
-﻿using RealEstateApp.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RealEstateApp.Data;
 using RealEstateApp.Models;
 using System;
 
@@ -33,6 +34,7 @@ namespace RealEstateApp.Helpers
             newMultiOwner.Block = buyer.Inscription.Block;
             newMultiOwner.Property = buyer.Inscription.Property;
             newMultiOwner.Owner = buyer.Rut;
+            newMultiOwner.RoyaltyPercentage = buyer.RoyaltyPercentage;
             newMultiOwner.Fojas = buyer.Inscription.Fojas;
             newMultiOwner.InscriptionYear = buyer.Inscription.InscriptionDate.Year;
             newMultiOwner.InscriptionNumber = buyer.Inscription.InscriptionNumber;
@@ -42,8 +44,6 @@ namespace RealEstateApp.Helpers
 
             _dbContext.Add(newMultiOwner);
 
-
-            _dbContext.SaveChanges();
         }
 
         public int ValidateInitialEffectiveYear(int year)
@@ -55,13 +55,20 @@ namespace RealEstateApp.Helpers
             return year;
         }
 
-        public void ValidateActiveMultiOwnerYear(MultiOwner multiOwner)
-        {
-            var latestMultiOwner = _dbContext.MultiOwners
+        public void ValidateActiveMultiOwnerYear(MultiOwner newMultiOwner)
+        { 
+            var latestMultiOwner = _dbContext.MultiOwners.Where(mo => mo.InscriptionNumber== newMultiOwner.InscriptionNumber)
             .OrderByDescending(mo => mo.InscriptionDate)
             .FirstOrDefault();
-            
 
+            if (IsMultiOwner1LaterThanMultiOwner2(newMultiOwner, latestMultiOwner))
+            {
+                latestMultiOwner.InitialEffectiveYear = newMultiOwner.InscriptionYear - 1;
+            }
+            else
+            {
+                newMultiOwner.InitialEffectiveYear = latestMultiOwner.InscriptionYear - 1;
+            }
         }
 
         public bool IsMultiOwner1LaterThanMultiOwner2(MultiOwner multiOwner1, MultiOwner multiOwner2)
