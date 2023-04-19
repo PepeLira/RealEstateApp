@@ -4,62 +4,62 @@
     ViewData["Title"] = "Inscription Details";
 }
 
-<h1>Details</h1>
+<h1>Detalles</h1>
 
 <div>
-    <h4>Inscription</h4>
+    <h4>Inscripción</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cne)
+            CNE
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Cne)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Commune)
+            Comuna
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Commune)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Block)
+            Manzana
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Block)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Property)
+            Predio
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Property)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Sellers)
+            Enajenate
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Sellers)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Buyers)
+            Adquirente
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Buyers.First().Rut)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fojas)
+            Foja
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Fojas)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.InscriptionNumber)
+            Número de Inscripción
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.InscriptionNumber)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.InscriptionDate)
+            Fecha de Inscripción
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.InscriptionDate)
@@ -67,5 +67,5 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Volver a Inscripciones</a>
 </div>

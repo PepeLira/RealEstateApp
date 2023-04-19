@@ -4,34 +4,34 @@
     ViewData["Title"] = "Inscription Index";
 }
 
-<h1>Index</h1>
+<h1>Inscripciones</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Crear Nuevo</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Cne)
+                CNE
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Commune)
+                Comuna
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Block)
+                Manzana
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Property)
+                Predio
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Fojas)
+                Foja
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.InscriptionNumber)
+                Número de Inscripción
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.InscriptionDate)
+                Fecha de Inscripción
             </th>
             <th></th>
         </tr>
@@ -61,7 +61,7 @@
                 @Html.DisplayFor(modelItem => item.InscriptionDate)
             </td>
             <td>
-                 <a asp-action="Details" asp-route-id="@item.AttentionID">Details</a>
+                 <a asp-action="Details" asp-route-id="@item.AttentionID">Detalles</a>
             </td>
         </tr>
 }

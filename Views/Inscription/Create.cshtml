@@ -7,27 +7,27 @@
 <form method="post">
     <div class="border p-3 mt-4">
         <div class="row pb-2">
-            <h2 class="text-primary">Create Inscription</h2>
+            <h2 class="text-primary">Crear Inscripción</h2>
             <hr />   
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.Cne, htmlAttributes: new { @class = "control-label col-md-2" })
+            CNE
             <div class="col-md-10">
                 @Html.DropDownListFor(model => model.Cne, (SelectList)ViewBag.CneOptions, "-- Select --", htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Cne, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Commune" class="control-label"></label>
+            Comuna
             <select asp-for="Commune" class="form-control" asp-items="@ViewBag.CommuneSelectList"></select>
         </div>
         <div class="mb-3">
-            <label asp-for="Block"></label>
+            Manzana
             <input asp-for="Block" class="form-control" />
             <span asp-validation-for="Block" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="Property"></label>
+            Predio
             <input asp-for="Property" class="form-control" />
             <span asp-validation-for="Property" class="text-danger"></span>
         </div>
@@ -35,32 +35,32 @@
             <!-- The Sellers will be displayed here -->
         </div>
         <div class="mb-3">
-            <button id="add-seller" type="button" class="btn btn-secondary" style="width:100px">Add Seller</button>
+            <button id="add-seller" type="button" class="btn btn-secondary" style="width:100px">Añadir Enajenante</button>
         </div>
         <div id="buyer-cards-container" class="card-deck mb-3">
             <!-- The Buyers will be displayed here -->
         </div>
         <div class="mb-3">
-            <button id="add-buyer" type="button" class="btn btn-secondary" style="width:100px">Add Buyer</button>
+            <button id="add-buyer" type="button" class="btn btn-secondary" style="width:100px">Añadir Adquirente</button>
         </div>
         <div class="mb-3">
-            <label asp-for="Fojas"></label>
+            Foja
             <input asp-for="Fojas" class="form-control" />
             <span asp-validation-for="Fojas" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="InscriptionNumber"></label>
+            Número de Inscripción
             <input asp-for="InscriptionNumber" class="form-control" />
             <span asp-validation-for="InscriptionNumber" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="InscriptionDate" class="control-label"></label>
+            Fecha de Inscripción
             <input asp-for="InscriptionDate" class="form-control" type="date" />
         </div>
-        <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
+        <button type="submit" class="btn btn-primary" style="width:150px">Crear</button>
         <div>
-            <a asp-action="Index">Back to List</a>
+            <a asp-action="Index">Volver a Inscripciones</a>
         </div>
     </div>
 </form>
@@ -106,15 +106,15 @@
 
         var cardTitle = document.createElement("h5");
         cardTitle.className = "card-title";
-        cardTitle.textContent = "New " + entityType;
+        cardTitle.textContent = "Nuevo " + entityType;
 
         var formGroup = document.createElement("div");
         formGroup.className = "form-group";
-        formGroup.appendChild(document.createElement("label")).textContent = entityType + " Rut:";
+        formGroup.appendChild(document.createElement("label")).textContent = "Rut:";
         formGroup.appendChild(rutInput);
-        formGroup.appendChild(document.createElement("label")).textContent = "Royalty Percentage:";
+        formGroup.appendChild(document.createElement("label")).textContent = "Porcentaje de derecho:";
         formGroup.appendChild(royaltyInput);
-        formGroup.appendChild(document.createElement("label")).textContent = "Unaccredited %:";
+        formGroup.appendChild(document.createElement("label")).textContent = "Porcentaje no acreditado:";
         formGroup.appendChild(unaccreditedSelect);
         formGroup.appendChild(removeButton);
 
@@ -137,12 +137,12 @@
     var addBuyerButton = document.getElementById("add-buyer");
 
     addSellerButton.addEventListener("click", function () {
-        var sellerCard = createInputFields("seller");
+        var sellerCard = createInputFields("enajenante");
         sellerCardsContainer.appendChild(sellerCard);
     });
 
     addBuyerButton.addEventListener("click", function () {
-        var buyerCard = createInputFields("buyer");
+        var buyerCard = createInputFields("adquirente");
         buyerCardsContainer.appendChild(buyerCard);
     });
 </script>
