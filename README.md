@@ -47,6 +47,7 @@ Para conectar Microsoft SQL Server simplemente debemos agregar el nombre de nues
 Para correr las migraciones simplemente ejecutamos la siguiente instrucción en la `Consola del administrador de packetes`:
 
 ```
+drop-database
 update-database
 ```
 
