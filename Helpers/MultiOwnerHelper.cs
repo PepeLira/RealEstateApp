@@ -60,7 +60,6 @@ namespace RealEstateApp.Helpers
             var latestMultiOwner = _dbContext.MultiOwners
             .OrderByDescending(mo => mo.InscriptionDate)
             .FirstOrDefault();
-
             
 
         }
