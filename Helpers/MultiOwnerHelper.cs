@@ -20,13 +20,16 @@ namespace RealEstateApp.Helpers
 
             _buyers = dbContext.Buyers.Where(b => b.Inscription.AttentionID == _newInscription.AttentionID);
 
+            int remainingBuyersPercentage = RemainingRoyaltyPercentage(_buyers);
+            int numBuyers = NotCreditedRoyaltyPercentageBuyers(_buyers);
+
             foreach (var buyer in _buyers)
             {
-                AddMultiOwners(buyer);
+                AddMultiOwners(buyer, remainingBuyersPercentage, numBuyers);
             }
         }
 
-        public void AddMultiOwners(Buyer buyer)
+        public void AddMultiOwners(Buyer buyer, int remainingBuyersPercentage, int numBuyers)
         {
             MultiOwner newMultiOwner = new MultiOwner();
 
@@ -34,7 +37,7 @@ namespace RealEstateApp.Helpers
             newMultiOwner.Block = buyer.Inscription.Block;
             newMultiOwner.Property = buyer.Inscription.Property;
             newMultiOwner.Owner = buyer.Rut;
-            newMultiOwner.RoyaltyPercentage = buyer.RoyaltyPercentage;
+            newMultiOwner.RoyaltyPercentage = ValidateRoyaltyPercentage(buyer.RoyaltyPercentage, remainingBuyersPercentage, numBuyers);
             newMultiOwner.Fojas = buyer.Inscription.Fojas;
             newMultiOwner.InscriptionYear = buyer.Inscription.InscriptionDate.Year;
             newMultiOwner.InscriptionNumber = buyer.Inscription.InscriptionNumber;
@@ -43,7 +46,49 @@ namespace RealEstateApp.Helpers
             newMultiOwner.FinalEffectiveYear = null;
 
             _dbContext.Add(newMultiOwner);
+        }
 
+        public int ValidateRoyaltyPercentage(int royaltyPercentage, int remainingBuyersPercentage, int numBuyers)
+        {
+
+            if (royaltyPercentage == 0)
+            {
+                royaltyPercentage = remainingBuyersPercentage / numBuyers;
+            }
+
+            return royaltyPercentage;
+        }
+
+        public int RemainingRoyaltyPercentage(IEnumerable<Buyer> buyers)
+        {
+            int totalBuyersPercentage = 0;
+            int maxPercentage = 100;
+
+            foreach (var buyer in buyers)
+            {
+                if (buyer.RoyaltyPercentage > 0)
+                {
+                    totalBuyersPercentage += buyer.RoyaltyPercentage;
+                }
+            }
+
+            int remainingBuyersPercentage = maxPercentage - totalBuyersPercentage;
+            return remainingBuyersPercentage;
+        }
+
+        public int NotCreditedRoyaltyPercentageBuyers(IEnumerable<Buyer> buyers)
+        {
+            int buyersQuantity = 0;
+
+            foreach (var buyer in buyers)
+            {
+                if (buyer.RoyaltyPercentage == 0)
+                {
+                    buyersQuantity += 1;
+                }
+            }
+
+            return buyersQuantity;
         }
 
         public int ValidateInitialEffectiveYear(int year)
