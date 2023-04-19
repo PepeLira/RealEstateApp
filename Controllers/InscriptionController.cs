@@ -58,7 +58,7 @@ namespace RealEstateApp.Controllers
 
             if (inscription.Cne == "RegularizaciónDePatrimonio")
             {
-                if (inscription == null | buyersCount == 0)
+                if (inscription == null | buyersCount == 0 | !ValidPercentage(buyerRoyalties))
                 {
                     return RedirectToAction("Create");
                 }
@@ -68,11 +68,54 @@ namespace RealEstateApp.Controllers
                     return RedirectToAction("Create");
                 }
 
+                (sellerRoyalties, buyerRoyalties) = NullifyUnaccreditedPercentage
+                                                            (sellerRoyalties,
+                                                            sellerUnaccreditedPer,
+                                                            buyerRoyalties,
+                                                            buyerUnaccreditedPer);
+
                 PopulateBuyers(inscription, buyerRuts, buyerRoyalties, buyerUnaccreditedPer);
                 _context.SaveChanges();
             }
+            else
+            {
+                return RedirectToAction("Create");
+            }
 
             return RedirectToAction("Index");
+        }
+
+        private bool ValidPercentage(int[] royalties)
+        {
+            int totalPercentage = royalties.Sum();
+            return totalPercentage >= 0 && totalPercentage <= 100;
+        }
+
+        private Tuple<int[], int[]> NullifyUnaccreditedPercentage 
+            (int[] sellerRoyalties, 
+            bool[] sellerUnaccreditedPer,
+            int[] buyerRoyalties,
+            bool[] buyerUnaccreditedPer)
+        {
+            for (int i = 0; i < sellerUnaccreditedPer.Length; i++)
+            {
+                var unaccreditedSeller = sellerUnaccreditedPer[i];
+                if (unaccreditedSeller)
+                {
+                    sellerRoyalties[i] = 0;
+                }
+            }
+
+            for (int i = 0;i  < buyerRoyalties.Length;i++)
+            {
+                var unaccreditedBuyer = buyerUnaccreditedPer[i];
+                if (unaccreditedBuyer)
+                {
+                    buyerRoyalties[i] = 0;
+                }
+            }
+
+            return new Tuple<int[], int[]>(sellerRoyalties, buyerRoyalties);
         }
 
         private void PopulateSellers(Inscription inscription, 
