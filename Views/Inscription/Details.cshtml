@@ -35,16 +35,28 @@
             @Html.DisplayFor(model => model.Property)
         </dd>
         <dt class = "col-sm-2">
-            Enajenate
+            Enajenates
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Sellers)
         </dd>
         <dt class = "col-sm-2">
-            Adquirente
+            Adquirentes
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Buyers.First().Rut)
+        <dd class="col-sm-10">
+            @if (Model.Buyers != null && Model.Buyers.Count > 0)
+            {
+                foreach (var buyer in Model.Buyers)
+                {
+                    <span>Rut: </span>
+                    @Html.DisplayFor(model => buyer.Rut)
+                    <br>
+                    <span>Porcentaje de derecho: </span>
+                    @Html.DisplayFor(model => buyer.RoyaltyPercentage)
+                    <span>% </span>
+                    <br>
+                }
+            }
         </dd>
         <dt class = "col-sm-2">
             Foja
