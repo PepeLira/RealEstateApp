@@ -56,7 +56,7 @@ namespace RealEstateApp.Controllers
             var buyersCount = buyerRuts.Length;
             var sellersCount = sellerRuts.Length;
 
-            if (inscription.Cne == "RegularizaciónDePatrimonio")
+            if (inscription.Cne == CneOptions.RegularizaciónDePatrimonio.ToString())
             {
                 if (inscription == null | buyersCount == 0 | !ValidPercentage(buyerRoyalties))
                 {
