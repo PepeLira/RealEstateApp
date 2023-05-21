@@ -93,9 +93,11 @@ namespace RealEstateApp.Helpers
 
         public int ValidateInitialEffectiveYear(int year)
         {
-            if (year < 2019)
+            int minimumYear = 2019;
+
+            if (year < minimumYear)
             {
-                year = 2019;
+                year = minimumYear;
             }
             return year;
         }
