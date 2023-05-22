@@ -6,7 +6,8 @@ using System;
 namespace RealEstateApp.Helpers
 {
     public class MultiOwnerHelper
-    {
+    {   
+        const int YEAR_MINIMUM = 2019;
         private readonly ApplicationDbContext _dbContext;
         private readonly IEnumerable<Buyer> _buyers;
         private readonly Inscription? _newInscription;
@@ -20,7 +21,7 @@ namespace RealEstateApp.Helpers
 
             _buyers = dbContext.Buyers.Where(b => b.Inscription.AttentionID == _newInscription.AttentionID);
 
-            int remainingBuyersPercentage = RemainingRoyaltyPercentage(_buyers);
+            double remainingBuyersPercentage = RemainingRoyaltyPercentage(_buyers);
             int numBuyers = NotCreditedRoyaltyPercentageBuyers(_buyers);
 
             foreach (var buyer in _buyers)
@@ -29,7 +30,7 @@ namespace RealEstateApp.Helpers
             }
         }
 
-        public void AddMultiOwners(Buyer buyer, int remainingBuyersPercentage, int numBuyers)
+        public void AddMultiOwners(Buyer buyer, double remainingBuyersPercentage, int numBuyers)
         {
             MultiOwner newMultiOwner = new MultiOwner();
 
@@ -48,7 +49,7 @@ namespace RealEstateApp.Helpers
             _dbContext.Add(newMultiOwner);
         }
 
-        public int ValidateRoyaltyPercentage(int royaltyPercentage, int remainingBuyersPercentage, int numBuyers)
+        public double ValidateRoyaltyPercentage(double royaltyPercentage, double remainingBuyersPercentage, int numBuyers)
         {
 
             if (royaltyPercentage == 0)
@@ -59,10 +60,10 @@ namespace RealEstateApp.Helpers
             return royaltyPercentage;
         }
 
-        public int RemainingRoyaltyPercentage(IEnumerable<Buyer> buyers)
+        public double RemainingRoyaltyPercentage(IEnumerable<Buyer> buyers)
         {
-            int totalBuyersPercentage = 0;
-            int maxPercentage = 100;
+            double totalBuyersPercentage = 0;
+            double maxPercentage = 100;
 
             foreach (var buyer in buyers)
             {
@@ -72,7 +73,7 @@ namespace RealEstateApp.Helpers
                 }
             }
 
-            int remainingBuyersPercentage = maxPercentage - totalBuyersPercentage;
+            double remainingBuyersPercentage = maxPercentage - totalBuyersPercentage;
             return remainingBuyersPercentage;
         }
 
@@ -93,11 +94,9 @@ namespace RealEstateApp.Helpers
 
         public int ValidateInitialEffectiveYear(int year)
         {
-            int minimumYear = 2019;
-
-            if (year < minimumYear)
+            if (year < YEAR_MINIMUM)
             {
-                year = minimumYear;
+                year = YEAR_MINIMUM;
             }
             return year;
         }

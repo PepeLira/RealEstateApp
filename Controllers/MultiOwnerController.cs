@@ -40,5 +40,6 @@ namespace RealEstateApp.Controllers
 
             return View(multiOwners.ToList());
         }
+
     }
 }

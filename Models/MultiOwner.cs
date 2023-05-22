@@ -10,7 +10,7 @@ namespace RealEstateApp.Models
         public int Block { get; set; }
         public int Property { get; set; }
         public string Owner { get; set; }
-        public int RoyaltyPercentage { get; set; }
+        public double RoyaltyPercentage { get; set; }
         public int Fojas { get; set; }
         public DateTime InscriptionDate { get; set; }
         public int InscriptionYear { get; set; }
