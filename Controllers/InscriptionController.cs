@@ -134,26 +134,46 @@ namespace RealEstateApp.Controllers
 
         private void fixActiveMultiOwnersfRoyalies(Inscription inscription)
         {
+            //obtener los multiowners activos
             var activeMultiOwners = _dbContext.MultiOwners
                 .Where(m => m.Commune == inscription.Commune
                             && m.Block == inscription.Block
                             && m.Property == inscription.Property
                             && m.FinalEffectiveYear == null)
                 .ToList();
-           
+
+            //obtener la suma total de los % de los multiowners activos
             var totalActiveMultiOwnersRoyalties = activeMultiOwners.Select(m => m.RoyaltyPercentage).ToArray().Sum();
 
-            foreach (var multiOwner in activeMultiOwners)
-            {            
-                var royaltyPercentage = multiOwner.RoyaltyPercentage / totalActiveMultiOwnersRoyalties * 100;                
-                multiOwner.RoyaltyPercentage = royaltyPercentage;
-
-                if (multiOwner.RoyaltyPercentage == 0)
+            if (totalActiveMultiOwnersRoyalties > 100)
+            {
+                foreach (var multiOwner in activeMultiOwners)
                 {
-                    _dbContext.MultiOwners.Remove(multiOwner);
+                    //calcular el % de cada multiowner
+                    var royaltyPercentage = multiOwner.RoyaltyPercentage / totalActiveMultiOwnersRoyalties * 100;
+                    //actualizar el % de cada multiowner
+                    multiOwner.RoyaltyPercentage = royaltyPercentage;
+
+                    if (multiOwner.RoyaltyPercentage == 0)
+                    {
+                        _dbContext.MultiOwners.Remove(multiOwner);
+                    }
                 }
             }
+            else if (totalActiveMultiOwnersRoyalties < 100)
+            {
+                var leftRoyalties = 100 - totalActiveMultiOwnersRoyalties;
 
+                var brokeActiveMultiOwners = activeMultiOwners.Where(m => m.RoyaltyPercentage == 0).ToList();
+
+                foreach (var multiOwner in brokeActiveMultiOwners)
+                {
+                    if (multiOwner.RoyaltyPercentage == 0)
+                    {
+                        multiOwner.RoyaltyPercentage = leftRoyalties / brokeActiveMultiOwners.Count();
+                    }
+                }
+            }
             _dbContext.SaveChanges();
         }
 
