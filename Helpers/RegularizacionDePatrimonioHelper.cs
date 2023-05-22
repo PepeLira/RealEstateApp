@@ -51,7 +51,6 @@ namespace RealEstateApp.Helpers
 
         public double ValidateRoyaltyPercentage(double royaltyPercentage, double remainingBuyersPercentage, int numBuyers)
         {
-
             if (royaltyPercentage == 0)
             {
                 royaltyPercentage = remainingBuyersPercentage / numBuyers;
@@ -98,6 +97,7 @@ namespace RealEstateApp.Helpers
             {
                 year = YEAR_MINIMUM;
             }
+
             return year;
         }
 

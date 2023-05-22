@@ -97,6 +97,7 @@ namespace RealEstateApp.Controllers
                 {
                     return RedirectToAction("Create");
                 }
+
                 handleRegularizacionDePatrimonio(
                     inscription, 
                     buyerRuts, 
@@ -133,22 +134,18 @@ namespace RealEstateApp.Controllers
 
         private void fixActiveMultiOwnersfRoyalies(Inscription inscription)
         {
-            //obtener los multiowners activos
             var activeMultiOwners = _dbContext.MultiOwners
                 .Where(m => m.Commune == inscription.Commune
                             && m.Block == inscription.Block
                             && m.Property == inscription.Property
                             && m.FinalEffectiveYear == null)
                 .ToList();
-
-            //obtener la suma total de los % de los multiowners activos
+           
             var totalActiveMultiOwnersRoyalties = activeMultiOwners.Select(m => m.RoyaltyPercentage).ToArray().Sum();
 
             foreach (var multiOwner in activeMultiOwners)
-            {
-                //calcular el % de cada multiowner
-                var royaltyPercentage = multiOwner.RoyaltyPercentage / totalActiveMultiOwnersRoyalties * 100;
-                //actualizar el % de cada multiowner
+            {            
+                var royaltyPercentage = multiOwner.RoyaltyPercentage / totalActiveMultiOwnersRoyalties * 100;                
                 multiOwner.RoyaltyPercentage = royaltyPercentage;
 
                 if (multiOwner.RoyaltyPercentage == 0)
@@ -169,7 +166,6 @@ namespace RealEstateApp.Controllers
             bool[] buyerUnaccreditedPer)
         {
             
-
             (sellerRoyalties, buyerRoyalties) = NullifyUnaccreditedPercentage
             (sellerRoyalties,
             sellerUnaccreditedPer,
@@ -178,8 +174,8 @@ namespace RealEstateApp.Controllers
 
             PopulateBuyers(inscription, buyerRuts, buyerRoyalties, buyerUnaccreditedPer);
             _dbContext.SaveChanges();
-            RegularizacionDePatrimonioHelper multiOwnerHelper = new RegularizacionDePatrimonioHelper(_dbContext);
 
+            RegularizacionDePatrimonioHelper multiOwnerHelper = new RegularizacionDePatrimonioHelper(_dbContext);
             _dbContext.SaveChanges();
         }
 
@@ -192,10 +188,8 @@ namespace RealEstateApp.Controllers
             double[] buyerRoyalties,
             bool[] buyerUnaccreditedPer)
         {
-            //obtener los enajenantes de multiowner
             List<MultiOwner> sellersMultiOwners = getRelatedMultiOwners(sellersRuts, inscription);
 
-            // primer caso los % suman 100
             if (totalRoyaltyPercentage(buyerRoyalties) == 100.0)
             {
                 double totalSellerRoyalties = sellersMultiOwners.Select(s => s.RoyaltyPercentage).ToArray().Sum();
@@ -214,7 +208,6 @@ namespace RealEstateApp.Controllers
                         _dbContext.MultiOwners.Remove(seller);
                 }
             }
-            //Caso 2 solo un enajenante y un adquirente
             else if (sellersRuts.Count() == 1 && buyerRuts.Count() == 1)
             {
                 var sellerMultiOwner = sellersMultiOwners[0];
@@ -233,12 +226,11 @@ namespace RealEstateApp.Controllers
                 AddBuyerToMultiOwners(buyer);
                 AddSellerToMultiOwners(seller);
             }
-
-            //caso 3 en caso de que no se cumpla el caso 1 o el caso 2
             else
             {
                 for (int i = 0; i < sellersMultiOwners.Count; i++)
-                {
+                {            
+                    //Calcular el porcentaje restante del vendedor
                     sellerRoyalties[0] = sellersMultiOwners[i].RoyaltyPercentage - sellerRoyalties[0];
 
                     if (sellerRoyalties[0] < 0)
@@ -259,6 +251,7 @@ namespace RealEstateApp.Controllers
                 {
                     AddBuyerToMultiOwners(buyer);
                 }
+
                 foreach (Seller seller in sellers)
                 {
                     AddSellerToMultiOwners(seller);
@@ -275,11 +268,14 @@ namespace RealEstateApp.Controllers
             {
                 buyerRoyalties[i] = buyerRoyalties[i] * totalSellerRoyalties / 100.0;
             }
+
             return buyerRoyalties;
         }
+
         private List<MultiOwner> getRelatedMultiOwners(string[] rutsList, Inscription inscription)
         {
             List<MultiOwner> multiOwners = new List<MultiOwner>();
+
             foreach (string seller in rutsList)
             {
                 var multiOwner = _dbContext.MultiOwners.FirstOrDefault(m => 
@@ -291,6 +287,7 @@ namespace RealEstateApp.Controllers
 
                 multiOwners.Add(multiOwner);
             }
+
             return multiOwners;
         }
 
@@ -298,16 +295,17 @@ namespace RealEstateApp.Controllers
         {
             foreach(string seller in sellersRuts)
             {
-                  if (!_dbContext.MultiOwners.Any(m => 
-                        m.Owner == seller &&
-                        m.Commune == inscription.Commune &&
-                        m.Block == inscription.Block &&
-                        m.Property == inscription.Property &&
-                        m.FinalEffectiveYear == null))
+                if (!_dbContext.MultiOwners.Any(m => 
+                    m.Owner == seller &&
+                    m.Commune == inscription.Commune &&
+                    m.Block == inscription.Block &&
+                    m.Property == inscription.Property &&
+                    m.FinalEffectiveYear == null))
                 {
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -348,27 +346,7 @@ namespace RealEstateApp.Controllers
             }
 
             return new Tuple<double[], double[]>(sellerRoyalties, buyerRoyalties);
-        }
-
-        private void PopulateSellers(Inscription inscription, 
-                                     string[] sellerRuts, 
-                                     int[] sellerRoyalties, 
-                                     bool[] sellerUnaccreditedPer)
-        {
-            inscription.Sellers = new List<Seller>();
-            for (int i = 0; i < sellerRuts.Length; i++)
-            {
-                var seller = new Seller
-                {
-                    Rut = sellerRuts[i],
-                    RoyaltyPercentage = sellerRoyalties[i],
-                    UnaccreditedRoyaltyPercentage = sellerUnaccreditedPer[i]
-                };
-
-                seller.Inscription = inscription;
-                _dbContext.Add(seller);
-            }
-        }
+        }       
 
         private List<Buyer> PopulateBuyers(Inscription inscription, 
                                     string[] buyerRuts,
@@ -376,6 +354,7 @@ namespace RealEstateApp.Controllers
                                     bool[] buyerUnaccreditedPer)
         {
             inscription.Buyers = new List<Buyer>();
+
             for (int i = 0; i < buyerRuts.Length; i++)
             {
                 var buyer = new Buyer
@@ -384,8 +363,8 @@ namespace RealEstateApp.Controllers
                     RoyaltyPercentage = buyerRoyalties[i],
                     UnaccreditedRoyaltyPercentage = buyerUnaccreditedPer[i]
                 };
-
                 buyer.Inscription = inscription;
+
                 _dbContext.Add(buyer);
             }
 
@@ -398,6 +377,7 @@ namespace RealEstateApp.Controllers
                             bool[] sellerUnaccreditedPer)
         {
             inscription.Sellers = new List<Seller>();
+
             for (int i = 0; i < sellerRuts.Length; i++)
             {
                 var buyer = new Seller
@@ -406,8 +386,8 @@ namespace RealEstateApp.Controllers
                     RoyaltyPercentage = sellerRoyalties[i],
                     UnaccreditedRoyaltyPercentage = sellerUnaccreditedPer[i]
                 };
-
                 buyer.Inscription = inscription;
+
                 _dbContext.Add(buyer);
             }
 
@@ -417,6 +397,7 @@ namespace RealEstateApp.Controllers
         private void updatePreviousMultiOwner(Inscription inscription)
         {
             var latestMultiOwners = GetActiveOwnersInMultiOwnerTable(inscription);
+
             foreach (var multiOwner in latestMultiOwners)
             {
                 if (multiOwner.InitialEffectiveYear < inscription.InscriptionDate.Year)
@@ -424,6 +405,7 @@ namespace RealEstateApp.Controllers
                     multiOwner.FinalEffectiveYear = ValidateInitialEffectiveYear(inscription.InscriptionDate.Year - 1);
                 }
             }
+
             _dbContext.SaveChanges();
         }
 

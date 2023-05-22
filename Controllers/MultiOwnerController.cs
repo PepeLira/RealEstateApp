@@ -17,7 +17,7 @@ namespace RealEstateApp.Controllers
 
         public ActionResult Index(int? year, string commune, int? block, int? property)
         {
-            var filteredMultiOwners = applicationDbContext.MultiOwners.AsQueryable(); 
+            var filteredMultiOwners = applicationDbContext.MultiOwners.AsQueryable();
             var communes = filteredMultiOwners.Select(m => m.Commune).Distinct().ToList();
             ViewBag.Communes = new SelectList(communes);
 
