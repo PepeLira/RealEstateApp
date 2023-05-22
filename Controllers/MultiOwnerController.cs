@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using RealEstateApp.Data;
 using RealEstateApp.Models;
 using System.Linq.Expressions;
@@ -16,11 +17,13 @@ namespace RealEstateApp.Controllers
 
         public ActionResult Index(int? year, string commune, int? block, int? property)
         {
-            var multiOwners = applicationDbContext.MultiOwners.AsQueryable();
+            var filteredMultiOwners = applicationDbContext.MultiOwners.AsQueryable(); 
+            var communes = filteredMultiOwners.Select(m => m.Commune).Distinct().ToList();
+            ViewBag.Communes = new SelectList(communes);
 
             if (year != null)
             {
-                multiOwners = multiOwners.Where(
+                filteredMultiOwners = filteredMultiOwners.Where(
                     multiOwner => multiOwner.InitialEffectiveYear <= year && 
                     (multiOwner.FinalEffectiveYear == null || multiOwner.FinalEffectiveYear >= year)
                     );
@@ -28,20 +31,20 @@ namespace RealEstateApp.Controllers
 
             if (!string.IsNullOrEmpty(commune))
             {
-                multiOwners = multiOwners.Where(multiOwner => multiOwner.Commune.Equals(commune));
+                filteredMultiOwners = filteredMultiOwners.Where(multiOwner => multiOwner.Commune.Equals(commune));
             }
 
             if (block != null)
             {
-                multiOwners = multiOwners.Where(multiOwner => multiOwner.Block == block);
+                filteredMultiOwners = filteredMultiOwners.Where(multiOwner => multiOwner.Block == block);
             }
 
             if (property != null)
             {
-                multiOwners = multiOwners.Where(multiOwner => multiOwner.Property == property);
+                filteredMultiOwners = filteredMultiOwners.Where(multiOwner => multiOwner.Property == property);
             }
 
-            return View(multiOwners.ToList());
+            return View(filteredMultiOwners.ToList());
         }
 
     }

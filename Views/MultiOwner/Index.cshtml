@@ -10,8 +10,8 @@
     </div>
 
     <div class="form-group">
-        <label for="commune">Comuna:</label>
-        @Html.TextBox("commune", ViewBag.Commune as string, new { @class = "form-control" })
+        <label for="commune">Comuna:</label><br/>
+        @Html.DropDownList("commune", ViewBag.Communes as SelectList, "All")      
     </div>
 
     <div class="form-group">
