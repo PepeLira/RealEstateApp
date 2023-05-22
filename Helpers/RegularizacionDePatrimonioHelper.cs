@@ -5,14 +5,14 @@ using System;
 
 namespace RealEstateApp.Helpers
 {
-    public class MultiOwnerHelper
+    public class RegularizacionDePatrimonioHelper
     {   
         const int YEAR_MINIMUM = 2019;
         private readonly ApplicationDbContext _dbContext;
         private readonly IEnumerable<Buyer> _buyers;
         private readonly Inscription? _newInscription;
 
-        public MultiOwnerHelper(ApplicationDbContext dbContext)
+        public RegularizacionDePatrimonioHelper(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
             _newInscription = dbContext.Inscriptions.Where(e => e.AttentionID > 0)

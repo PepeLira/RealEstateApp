@@ -178,7 +178,7 @@ namespace RealEstateApp.Controllers
 
             PopulateBuyers(inscription, buyerRuts, buyerRoyalties, buyerUnaccreditedPer);
             _dbContext.SaveChanges();
-            MultiOwnerHelper multiOwnerHelper = new MultiOwnerHelper(_dbContext);
+            RegularizacionDePatrimonioHelper multiOwnerHelper = new RegularizacionDePatrimonioHelper(_dbContext);
 
             _dbContext.SaveChanges();
         }
