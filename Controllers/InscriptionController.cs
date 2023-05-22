@@ -107,7 +107,7 @@ namespace RealEstateApp.Controllers
             }
             else if (inscription.Cne == CneOptions.Compraventa.ToString())
             {
-                if (notValidCompraventa(inscription, buyersCount, buyerRoyalties, sellerRoyalties, sellersCount))
+                if (!sellersExist(sellerRuts, inscription) | notValidCompraventa(inscription, buyersCount, buyerRoyalties, sellerRoyalties, sellersCount))
                 {
                     return RedirectToAction("Create");
                 }
@@ -126,8 +126,38 @@ namespace RealEstateApp.Controllers
                 return RedirectToAction("Create");
             }
 
+            fixActiveMultiOwnersfRoyalies(inscription);
 
             return RedirectToAction("Index");
+        }
+
+        private void fixActiveMultiOwnersfRoyalies(Inscription inscription)
+        {
+            //obtener los multiowners activos
+            var activeMultiOwners = _dbContext.MultiOwners
+                .Where(m => m.Commune == inscription.Commune
+                            && m.Block == inscription.Block
+                            && m.Property == inscription.Property
+                            && m.FinalEffectiveYear == null)
+                .ToList();
+
+            //obtener la suma total de los % de los multiowners activos
+            var totalActiveMultiOwnersRoyalties = activeMultiOwners.Select(m => m.RoyaltyPercentage).ToArray().Sum();
+
+            foreach (var multiOwner in activeMultiOwners)
+            {
+                //calcular el % de cada multiowner
+                var royaltyPercentage = multiOwner.RoyaltyPercentage / totalActiveMultiOwnersRoyalties * 100;
+                //actualizar el % de cada multiowner
+                multiOwner.RoyaltyPercentage = royaltyPercentage;
+
+                if (multiOwner.RoyaltyPercentage == 0)
+                {
+                    _dbContext.MultiOwners.Remove(multiOwner);
+                }
+            }
+
+            _dbContext.SaveChanges();
         }
 
         private void handleRegularizacionDePatrimonio (
@@ -162,70 +192,44 @@ namespace RealEstateApp.Controllers
             double[] buyerRoyalties,
             bool[] buyerUnaccreditedPer)
         {
+            //obtener los enajenantes de multiowner
+            List<MultiOwner> sellersMultiOwners = getRelatedMultiOwners(sellersRuts, inscription);
+
             // primer caso los % suman 100
             if (totalRoyaltyPercentage(buyerRoyalties) == 100.0)
             {
-                //verificar que los enajenantes existan
-                if (sellersExist(sellersRuts, inscription))
+                double totalSellerRoyalties = sellersMultiOwners.Select(s => s.RoyaltyPercentage).ToArray().Sum();
+                buyerRoyalties = CalculateBuyerRoyalties(buyerRoyalties, totalSellerRoyalties);
+                var buyers = PopulateBuyers(inscription, buyerRuts, buyerRoyalties, buyerUnaccreditedPer);
+                var sellers = PopulateSellers(inscription, sellersRuts, sellerRoyalties, sellerUnaccreditedPer);
+
+                foreach (Buyer buyer in buyers)
                 {
-                    //obtener los enajenantes de multiowner
-                    List<MultiOwner> sellersMultiOwners = getRelatedMultiOwners(sellersRuts, inscription);
+                    AddBuyerToMultiOwners(buyer);
+                }
 
-                    //obtener la suma % total de cada enajenante
-                    double totalSellerRoyalties = sellersMultiOwners.Select(s => s.RoyaltyPercentage).ToArray().Sum();
-                    
-                    //calcular % de cada adquirente
-                    buyerRoyalties = CalculateBuyerRoyalties(buyerRoyalties, totalSellerRoyalties);
-                    
-                    //crear adquirentes y enajenantes 
-                    var buyers = PopulateBuyers(inscription, buyerRuts, buyerRoyalties, buyerUnaccreditedPer);
-                    var sellers = PopulateSellers(inscription, sellersRuts, sellerRoyalties, sellerUnaccreditedPer);
-
-                    //actualizar buyers en multiowner
-                    foreach (Buyer buyer in buyers)
-                    {
-                        AddBuyerToMultiOwners(buyer);
-                    }
-                    //remover enajenantes de multiowner
-                    foreach (MultiOwner seller in sellersMultiOwners)
-                    {
-                        if (seller.InitialEffectiveYear == inscription.InscriptionDate.Year)
-                            _dbContext.MultiOwners.Remove(seller);
-                    }
+                foreach (MultiOwner seller in sellersMultiOwners)
+                {
+                    if (seller.InitialEffectiveYear == inscription.InscriptionDate.Year)
+                        _dbContext.MultiOwners.Remove(seller);
                 }
             }
             //Caso 2 solo un enajenante y un adquirente
             else if (sellersRuts.Count() == 1 && buyerRuts.Count() == 1)
             {
-                //verificar que el enajenante exista?
-                //TODO
-                
-                //obtener el enajenante de multiowner
-                var sellerMultiOwner = _dbContext.MultiOwners.FirstOrDefault(m =>
-                    m.Owner == sellersRuts[0] 
-                    && m.Commune == inscription.Commune
-                    && m.Block == inscription.Block
-                    && m.Property == inscription.Property
-                    && m.FinalEffectiveYear == null);
-
-                //calcular % de adquirente
+                var sellerMultiOwner = sellersMultiOwners[0];
                 var offeredRoyalty = sellerMultiOwner.RoyaltyPercentage * sellerRoyalties[0] / 100.0;
                 buyerRoyalties[0] = buyerRoyalties[0] * offeredRoyalty / 100.0;
-
-                //actualizar % de enajenante
                 sellerRoyalties[0] = sellerMultiOwner.RoyaltyPercentage - buyerRoyalties[0];
 
-                //remover enajenante de multiowner
                 if (sellerMultiOwner.InitialEffectiveYear == inscription.InscriptionDate.Year)
                 {
                     _dbContext.MultiOwners.Remove(sellerMultiOwner);
                 }
 
-                //crear enajenante y adquirente
                 var buyer = PopulateBuyers(inscription, buyerRuts, buyerRoyalties, buyerUnaccreditedPer)[0];
                 var seller = PopulateSellers(inscription, sellersRuts, sellerRoyalties, sellerUnaccreditedPer)[0];
 
-                //actualizar buyer en multiowner
                 AddBuyerToMultiOwners(buyer);
                 AddSellerToMultiOwners(seller);
             }
@@ -233,26 +237,24 @@ namespace RealEstateApp.Controllers
             //caso 3 en caso de que no se cumpla el caso 1 o el caso 2
             else
             {
-                //obtener los enajenantes de multiowner
-                List<MultiOwner> sellersMultiOwners = getRelatedMultiOwners(sellersRuts, inscription);
-
-                //actualizar % de enajenante
                 for (int i = 0; i < sellersMultiOwners.Count; i++)
                 {
                     sellerRoyalties[0] = sellersMultiOwners[i].RoyaltyPercentage - sellerRoyalties[0];
 
-                    //remover enajenantes de multiowner (si son del mismo año)
+                    if (sellerRoyalties[0] < 0)
+                    {
+                        sellerRoyalties[0] = 0;
+                    }
+
                     if (sellersMultiOwners[i].InitialEffectiveYear == inscription.InscriptionDate.Year)
                     {
                         _dbContext.MultiOwners.Remove(sellersMultiOwners[i]);
                     }
                 }
 
-                //crear enajenante y adquirente
                 var buyers = PopulateBuyers(inscription, buyerRuts, buyerRoyalties, buyerUnaccreditedPer);
                 var sellers = PopulateSellers(inscription, sellersRuts, sellerRoyalties, sellerUnaccreditedPer);
 
-                //actualizar buyer en multiowner
                 foreach (Buyer buyer in buyers)
                 {
                     AddBuyerToMultiOwners(buyer);
@@ -296,7 +298,8 @@ namespace RealEstateApp.Controllers
         {
             foreach(string seller in sellersRuts)
             {
-                  if (!_dbContext.MultiOwners.Any(m => m.Owner == seller &&
+                  if (!_dbContext.MultiOwners.Any(m => 
+                        m.Owner == seller &&
                         m.Commune == inscription.Commune &&
                         m.Block == inscription.Block &&
                         m.Property == inscription.Property &&
