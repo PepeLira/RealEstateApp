@@ -20,7 +20,10 @@ namespace RealEstateApp.Controllers
 
             if (year != null)
             {
-                multiOwners = multiOwners.Where(multiOwner => multiOwner.InscriptionYear == year);
+                multiOwners = multiOwners.Where(
+                    multiOwner => multiOwner.InitialEffectiveYear <= year && 
+                    (multiOwner.FinalEffectiveYear == null || multiOwner.FinalEffectiveYear >= year)
+                    );
             }
 
             if (!string.IsNullOrEmpty(commune))
